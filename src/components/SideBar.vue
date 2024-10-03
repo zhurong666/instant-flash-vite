@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref} from "vue";
+import {onMounted, ref, watch} from "vue";
 import {getCssVariableValue} from "@/utils";
 import SidebarItem from "@/components/SidebarItem.vue";
 import router from "@/router";
@@ -15,51 +15,29 @@ const textColor = ref(v3SidebarMenuTextColor)
 const activeTextColor = ref(v3SidebarMenuActiveTextColor)
 
 const selected = (id, idArr, idObj) => {
-  switch (id) {
-    case "1-1":
-      router.push(`/about`)
-      break;
-    case "1-2":
-      router.push(`/login`)
-      break;
-    case "2-1":
+  for (let route of router.getRoutes()) {
+    if (route.meta.menuId == id) {
+      console.log(route.meta.menuId, route.path)
       router.push({
-        path: `/user/edit/1`,
+        path: route.path
       })
-      break;
-    case "2-2":
-      router.push({
-        path: `/user/search`,
-      })
-      break;
-    case "2-3":
-      router.push({
-        path: `/user/create`
-      })
-      break;
-    case "2-4":
-      router.push({
-        path: `/user/edit/1`,
-      })
-      break;
-    case "3-1":
-      router.push({
-        path: `/active/check`
-      })
-      break;
-    case "3-2":
-      router.push({
-        path: `/active/search`
-      })
-      break;
-    case "3-3":
-      router.push({
-        path: `/active/edit/1`
-      })
-      break;
+      break
+    }
   }
   activeMenu.value = id;
 }
+
+const updateActiveMenu = () => {
+  const currentRoute = router.currentRoute.value;
+  if (currentRoute.meta.menuId) {
+    activeMenu.value = currentRoute.meta.menuId;
+  }
+};
+
+// 在组件挂载时和路由变化时更新激活菜单
+onMounted(updateActiveMenu);
+watch(() => router.currentRoute.value, updateActiveMenu);
+
 </script>
 
 <template>

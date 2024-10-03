@@ -12,16 +12,19 @@ const routes: RouteRecordRaw[] = [
         path: '/',
         name: 'Home',
         redirect: "/user/search",
+        meta: { menuId: '1-1' },
         component: () => import("../components/HomeView.vue")
     },
     {
         path: '/login',
         name: 'Login',
+        meta: { menuId: '10-1' },
         component: () => import("../pages/LoginView.vue")
     },
     {
         path: '/about',
         name: 'About',
+        meta: { menuId: '1-1' },
         component: () => import("../pages/AboutView.vue")
     },
     {
@@ -32,21 +35,25 @@ const routes: RouteRecordRaw[] = [
             {
                 path: 'create',
                 name: 'UserCreate',
+                meta: { menuId: '2-1' },
                 component: () => import("../components/user/CreateUserView.vue")
             },
             {
                 path: 'search',
                 name: 'UserSearch',
+                meta: { menuId: '2-2' },
                 component: () => import("../components/user/SearchUserView.vue")
             },
             {
                 path: 'detail/:id',
                 name: 'UserDetail',
+                meta: { menuId: '2-3' },
                 component: () => import("../components/user/UserDetailsView.vue")
             },
             {
                 path: 'edit/:id',
                 name: 'UserEdit',
+                meta: { menuId: '2-4' },
                 component: () => import("../components/user/EditUserView.vue")
             },
         ],
@@ -59,21 +66,25 @@ const routes: RouteRecordRaw[] = [
             {
                 path: 'check',
                 name: 'ActiveCheck',
+                meta: { menuId: '3-1' },
                 component: () => import("../components/active/CheckActiveView.vue")
             },
             {
                 path: 'edit/:id',
                 name: 'ActiveEdit',
+                meta: { menuId: '3-2' },
                 component: () => import("../components/active/EditActiveView.vue")
             },
             {
                 path: 'search',
                 name: 'ActiveSearch',
+                meta: { menuId: '3-3' },
                 component: () => import("../components/active/SearchActiveView.vue")
             },
             {
                 path: 'detail/:id',
                 name: 'ActiveDetail',
+                meta: { menuId: '3-4' },
                 component: () => import("../components/active/ActiveDetailsView.vue")
             },
         ],

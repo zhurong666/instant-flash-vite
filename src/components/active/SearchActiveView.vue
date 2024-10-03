@@ -69,7 +69,7 @@ const tableData = [
   <div class="page-container">
     <el-pagination
         :page-size="10"
-        :pager-count="6"
+        :pager-count="7"
         layout="prev, pager, next"
         :total="100"
     />

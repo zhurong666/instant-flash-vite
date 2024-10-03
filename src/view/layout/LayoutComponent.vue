@@ -18,9 +18,7 @@ import HeaderComponent from "@/components/HeaderComponent.vue";
           <el-main>
             <!--二级路由-->
             <router-view v-slot="{ Component }">
-              <transition name="fade" mode="out-in">
-                <component :is="Component"/>
-              </transition>
+              <component :is="Component"/>
             </router-view>
           </el-main>
           <el-footer>
