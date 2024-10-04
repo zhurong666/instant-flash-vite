@@ -57,14 +57,14 @@ const centerDialogVisible = ref(true)
         size="large"
         style="width: 100%">
       <el-table-column fixed prop="eventId" label="活动编号" width="150"/>
-      <el-table-column prop="userId" label="用户编号" width="120"/>
+      <el-table-column prop="userId" label="用户编号" width="150"/>
       <el-table-column prop="name" label="活动名称" width="120"/>
-      <el-table-column prop="imageUrls" label="宣传图片" width="120"/>
+      <el-table-column prop="imageUrls" label="宣传图片" width="150"/>
       <el-table-column prop="category" label="活动类型" width="120"/>
       <el-table-column prop="targetGroupId" label="目标用户群体" width="120"/>
-      <el-table-column prop="address" label="活动地点" width="180"/>
-      <el-table-column prop="regStartTime" label="报名开始时间" width="120"/>
-      <el-table-column prop="regEndTime" label="报名结束时间" width="120"/>
+      <el-table-column prop="address" label="活动地点" width="220"/>
+      <el-table-column prop="regStartTime" label="报名开始时间" width="180"/>
+      <el-table-column prop="regEndTime" label="报名结束时间" width="180"/>
       <el-table-column prop="startTime" label="活动开始时间" width="180"/>
       <el-table-column prop="endTime" label="活动结束时间" width="180"/>
       <el-table-column prop="maxParticipant" label="最多人数" width="180"/>

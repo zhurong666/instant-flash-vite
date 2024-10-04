@@ -13,22 +13,18 @@ const handleClick = (userId) => {
 
 const tableData = [
   {
-    date: '2016-05-03',
-    name: 'Tom',
-    state: 'California',
+    userId: '1001',
+    phone: '110',
+    email: '27@gmail.com',
     city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-    tag: 'Home',
-  },
-  {
-    date: '2016-05-02',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-    tag: 'Office',
+    username: '小宋',
+    gender: '男',
+    integral: '0',
+    reputation: '99',
+    address: '四川省成都市温江区',
+    lastAddress: '四川省成都市温江区',
+    lastTime: '2024-10-02 09:00:00',
+    reputation: '99',
   }
 ]
 
@@ -51,16 +47,16 @@ const centerDialogVisible = ref(true)
         :data="tableData"
         size="large"
         style="width: 100%">
-      <el-table-column fixed prop="date" label="用户编号" width="150"/>
-      <el-table-column prop="state" label="手机号码" width="120"/>
-      <el-table-column prop="state" label="用户邮箱" width="120"/>
-      <el-table-column prop="name" label="用户昵称" width="120"/>
-      <el-table-column prop="city" label="性别" width="120"/>
-      <el-table-column prop="address" label="积分" width="120"/>
-      <el-table-column prop="address" label="信誉值" width="120"/>
-      <el-table-column prop="address" label="账号所属地" width="180"/>
-      <el-table-column prop="zip" label="最后上线所在地" width="180"/>
-      <el-table-column prop="zip" label="最后上线时间" width="180"/>
+      <el-table-column fixed prop="userId" label="用户编号" width="150"/>
+      <el-table-column prop="phone" label="手机号码" width="150"/>
+      <el-table-column prop="email" label="用户邮箱" width="180"/>
+      <el-table-column prop="username" label="用户昵称" width="120"/>
+      <el-table-column prop="gender" label="性别" width="120"/>
+      <el-table-column prop="integral" label="积分" width="120"/>
+      <el-table-column prop="reputation" label="信誉值" width="120"/>
+      <el-table-column prop="address" label="账号所属地" width="220"/>
+      <el-table-column prop="lastAddress" label="最后上线所在地" width="220"/>
+      <el-table-column prop="lastTime" label="最后上线时间" width="180"/>
       <el-table-column fixed="right" label="操作" min-width="120">
         <template #default>
           <el-button link type="primary" size="small"
