@@ -1,8 +1,8 @@
-import axios, { type AxiosInstance, type AxiosRequestConfig } from "axios"
-import { useUserStoreHook } from "../store/modules/user"
-import { ElMessage } from "element-plus"
-import { get, merge } from "lodash-es"
-import { getToken } from "./cache/cookies"
+import axios, {type AxiosInstance, type AxiosRequestConfig} from "axios"
+import {useUserStoreHook} from "../store/modules/user"
+import {ElMessage} from "element-plus"
+import {get, merge} from "lodash-es"
+import {getToken} from "./cache/cookies"
 
 /** 退出登录并强制刷新页面（会重定向到登录页） */
 function logout() {
@@ -104,7 +104,7 @@ function createRequest(service: AxiosInstance) {
         const defaultConfig = {
             headers: {
                 // 携带 Token
-                token: token ? `${token}` : undefined,
+                token,
                 "Content-Type": "application/json"
             },
             timeout: 5000,

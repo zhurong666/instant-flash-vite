@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {onMounted, ref} from "vue";
+import {onMounted, reactive, ref} from "vue";
 import router from "@/router";
 import {request} from "@/utils/service.ts";
 
@@ -9,7 +9,7 @@ const handleClick = (userId) => {
   })
 }
 
-const tableData = [
+const tableData = reactive([
   {
     eventId: '10001',
     userId: '002',
@@ -27,7 +27,7 @@ const tableData = [
     address: '成都师范第一操场',
     imageUrls: "xxx.jpg"
   }
-]
+])
 
 const centerDialogVisible = ref(false)
 
@@ -35,12 +35,17 @@ onMounted(() => {
   loadData()
 })
 
-const loadData = async () => {
+const loadData = async (pageNum = 1, pageSize = 10) => {
   const data = await request({
     method: 'GET',
-    url: "events"
+    url: "event",
+    params: {
+      pageNum,
+      pageSize,
+    }
   })
-  console.log(data)
+  tableData.splice(0)
+  tableData.push(...data.data)
 }
 </script>
 
