@@ -31,6 +31,13 @@ const loginFormRules: FormRules = {
 const handleLogin = () => {
 
 }
+
+const handleBlur = () => {
+
+}
+const handleFocus = () => {
+
+}
 </script>
 
 <template>

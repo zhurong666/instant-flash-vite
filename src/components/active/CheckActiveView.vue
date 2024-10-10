@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import router from "@/router";
+import {request} from "@/utils/service.ts";
 
 const handleClick = (userId) => {
   router.push({
-    path:`/user/detail/${1}`,
+    path: `/user/detail/${1}`,
   })
 }
 
@@ -13,7 +14,7 @@ const tableData = [
     eventId: '10001',
     userId: '002',
     userInfo: {
-      username:"张中央"
+      username: "张中央"
     },
     name: '打网球',
     category: '体育',
@@ -24,28 +25,23 @@ const tableData = [
     endTime: '2024-10-02 19:30:00',
     maxParticipant: '100',
     address: '成都师范第一操场',
-    imageUrls:"xxx.jpg"
-  },
-  {
-    eventId: '10002',
-    userId: '001',
-    userInfo: {
-      username:"张中央"
-    },
-    name: '打网球',
-    category: '体育',
-    targetGroupId: '大学生',
-    regStartTime: '2024-10-01 09:30:00',
-    regEndTime: '2024-10-01 09:50:00',
-    startTime: '2024-10-02 09:30:00',
-    endTime: '2024-10-02 19:30:00',
-    maxParticipant: '100',
-    address: '成都师范第一操场',
-    imageUrls:"xxx.jpg"
+    imageUrls: "xxx.jpg"
   }
 ]
 
-const centerDialogVisible = ref(true)
+const centerDialogVisible = ref(false)
+
+onMounted(() => {
+  loadData()
+})
+
+const loadData = async () => {
+  const data = await request({
+    method: 'GET',
+    url: "events"
+  })
+  console.log(data)
+}
 </script>
 
 <template>
@@ -71,7 +67,8 @@ const centerDialogVisible = ref(true)
       <el-table-column fixed="right" label="操作" min-width="120">
         <template #default>
           <el-button link type="primary" size="small"
-                     @click="handleClick">详情</el-button>
+                     @click="handleClick">详情
+          </el-button>
           <el-button link type="primary" size="small">通过</el-button>
           <el-button link type="primary" size="small">打回</el-button>
         </template>

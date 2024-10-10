@@ -25,6 +25,7 @@ function createService() {
         (response) => {
             // apiData 是 api 返回的数据
             const apiData = response.data
+            console.log("apiData", apiData)
             // 二进制数据则直接返回
             const responseType = response.request?.responseType
             if (responseType === "blob" || responseType === "arraybuffer") return apiData
@@ -36,8 +37,8 @@ function createService() {
                 return Promise.reject(new Error("非本系统的接口"))
             }
             switch (code) {
-                case 0:
-                    // 本系统采用 code === 0 来表示没有业务错误
+                case 200:
+                    // 本系统采用 code === 200 来表示没有业务错误
                     return apiData
                 case 401:
                     // Token 过期时
@@ -103,7 +104,7 @@ function createRequest(service: AxiosInstance) {
         const defaultConfig = {
             headers: {
                 // 携带 Token
-                Authorization: token ? `Bearer ${token}` : undefined,
+                token: token ? `${token}` : undefined,
                 "Content-Type": "application/json"
             },
             timeout: 5000,

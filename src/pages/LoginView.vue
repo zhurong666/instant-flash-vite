@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import {useRouter} from "vue-router";
 import {FormInstance, FormRules} from "element-plus";
-import {ref, reactive} from "vue";
-import {User, Lock, Key, Picture, Loading} from "@element-plus/icons-vue"
+import {reactive, ref} from "vue";
+import {Key, Loading, Lock, Picture, User} from "@element-plus/icons-vue"
 // type 加与不加区别？
 import {LoginRequestData} from "../api/login/types/login.ts";
 import {useUserStore} from "../store/modules/user.ts";
+import {getLoginCodeApi} from "@/api/login";
+
 const baseUri = import.meta.env.VITE_BASE_API
 const router = useRouter()
 /** 登录表单元素的引用 */
@@ -16,18 +18,18 @@ const loading = ref(false)
 const codeUrl = ref(baseUri + "/common")
 /** 登录表单数据 */
 const loginFormData: LoginRequestData = reactive({
-  username: "admin",
-  password: "12345678",
-  code: ""
+  username: "110",
+  password: "123456",
+  verifyCode: ""
 })
 /** 登录表单校验规则 */
 const loginFormRules: FormRules = {
   username: [{required: true, message: "请输入用户名", trigger: "blur"}],
   password: [
     {required: true, message: "请输入密码", trigger: "blur"},
-    {min: 8, max: 16, message: "长度在 8 到 16 个字符", trigger: "blur"}
+    {min: 6, max: 16, message: "长度在 6 到 16 个字符", trigger: "blur"}
   ],
-  code: [{required: true, message: "请输入验证码", trigger: "blur"}]
+  verifyCode: [{required: true, message: "请输入验证码", trigger: "blur"}]
 }
 /** 登录逻辑 */
 const handleLogin = () => {
@@ -36,10 +38,12 @@ const handleLogin = () => {
       loading.value = true
       useUserStore()
           .login(loginFormData)
-          .then(() => {
+          .then((data) => {
+            console.log("data",data)
             router.push({path: "/"})
           })
-          .catch(() => {
+          .catch((e) => {
+            console.log("e",e)
             createCode()
             loginFormData.password = ""
           })
@@ -50,6 +54,26 @@ const handleLogin = () => {
       console.error("表单校验不通过", fields)
     }
   })
+}
+const handleFocus = () => {
+
+}
+const handleBlur = () => {
+
+}
+/** 创建验证码 */
+const createCode = () => {
+  if (loginFormData.username.length == 0) {
+    alert("请先输入账号")
+  }
+  // 先清空验证码的输入
+  loginFormData.verifyCode = ""
+  // 获取验证码
+  codeUrl.value = ""
+  // getLoginCodeApi(loginFormData.username).then((res) => {
+  //   codeUrl.value = res.data
+  // })
+  codeUrl.value = getLoginCodeApi(loginFormData.username)
 }
 </script>
 
@@ -87,9 +111,9 @@ const handleLogin = () => {
                 @focus="handleFocus"
             />
           </el-form-item>
-          <el-form-item prop="code">
+          <el-form-item prop="verifyCode">
             <el-input
-                v-model.trim="loginFormData.code"
+                v-model.trim="loginFormData.verifyCode"
                 placeholder="验证码"
                 type="text"
                 tabindex="3"

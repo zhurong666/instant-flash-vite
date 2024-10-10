@@ -28,7 +28,7 @@ const tableData = [
   }
 ]
 
-const centerDialogVisible = ref(true)
+const centerDialogVisible = ref(false)
 </script>
 
 <template>
