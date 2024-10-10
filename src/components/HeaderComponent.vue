@@ -1,6 +1,7 @@
 <script setup lang="ts">
 // 1 展开或者折叠
 import {reactive, ref} from "vue";
+import {removeToken} from "@/utils/cache/cookies.ts";
 
 // const headerStore = useHeaderStore()
 const FoldOrExpand = ref('Fold')
@@ -13,7 +14,7 @@ const isExpand = () => {
   }
 }
 const logout = () => {
-
+  removeToken()
 }
 
 const userInfo = reactive({

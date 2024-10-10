@@ -3,31 +3,13 @@ import {onMounted, reactive, ref} from "vue";
 import router from "@/router";
 import {request} from "@/utils/service.ts";
 
-const handleClick = (userId) => {
+const handleClick = (index) => {
   router.push({
     path: `/user/detail/${1}`,
   })
 }
 
-const tableData = reactive([
-  {
-    eventId: '10001',
-    userId: '002',
-    userInfo: {
-      username: "张中央"
-    },
-    name: '打网球',
-    category: '体育',
-    targetGroupId: '大学生',
-    regStartTime: '2024-10-01 09:30:00',
-    regEndTime: '2024-10-01 09:50:00',
-    startTime: '2024-10-02 09:30:00',
-    endTime: '2024-10-02 19:30:00',
-    maxParticipant: '100',
-    address: '成都师范第一操场',
-    imageUrls: "xxx.jpg"
-  }
-])
+const tableData = reactive([])
 
 const centerDialogVisible = ref(false)
 
@@ -38,7 +20,7 @@ onMounted(() => {
 const loadData = async (pageNum = 1, pageSize = 10) => {
   const data = await request({
     method: 'GET',
-    url: "event",
+    url: "admin/event",
     params: {
       pageNum,
       pageSize,
@@ -46,6 +28,22 @@ const loadData = async (pageNum = 1, pageSize = 10) => {
   })
   tableData.splice(0)
   tableData.push(...data.data)
+}
+
+async function pass(index){
+  const eventId = tableData[index].id
+  const data = await request({
+    url: 'admin/event/'+eventId+"/review",
+    method: 'POST',
+    params: {
+      isApproved:true
+    }
+  })
+  console.log(data)
+}
+
+async function deny(index){
+
 }
 </script>
 
@@ -57,10 +55,14 @@ const loadData = async (pageNum = 1, pageSize = 10) => {
         :data="tableData"
         size="large"
         style="width: 100%">
-      <el-table-column fixed prop="eventId" label="活动编号" width="150"/>
+      <el-table-column fixed prop="id" label="活动编号" width="150"/>
       <el-table-column prop="userId" label="用户编号" width="150"/>
       <el-table-column prop="name" label="活动名称" width="120"/>
-      <el-table-column prop="imageUrls" label="宣传图片" width="150"/>
+      <el-table-column label="宣传图片" width="150">
+        <template #default="scope">
+          <el-image preview-teleported :src="scope.row.imageUrls" />
+        </template>
+      </el-table-column>
       <el-table-column prop="category" label="活动类型" width="120"/>
       <el-table-column prop="targetGroupId" label="目标用户群体" width="120"/>
       <el-table-column prop="address" label="活动地点" width="220"/>
@@ -70,12 +72,12 @@ const loadData = async (pageNum = 1, pageSize = 10) => {
       <el-table-column prop="endTime" label="活动结束时间" width="180"/>
       <el-table-column prop="maxParticipant" label="最多人数" width="180"/>
       <el-table-column fixed="right" label="操作" min-width="120">
-        <template #default>
+        <template #default="scope">
           <el-button link type="primary" size="small"
-                     @click="handleClick">详情
+                     @click="handleClick(scope.$index)">详情
           </el-button>
-          <el-button link type="primary" size="small">通过</el-button>
-          <el-button link type="primary" size="small">打回</el-button>
+          <el-button link type="primary" size="small" @click="pass(scope.$index)">通过</el-button>
+          <el-button link type="primary" size="small" @click="deny(scope.$index)">打回</el-button>
         </template>
       </el-table-column>
     </el-table>
