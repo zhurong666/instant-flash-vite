@@ -43,7 +43,15 @@ async function pass(index){
 }
 
 async function deny(index){
-
+  const eventId = tableData[index].id
+  const data = await request({
+    url: 'admin/event/'+eventId+"/review",
+    method: 'POST',
+    params: {
+      isApproved:false
+    }
+  })
+  console.log(data)
 }
 </script>
 
