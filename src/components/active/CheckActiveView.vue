@@ -39,7 +39,9 @@ async function pass(index){
       isApproved:true
     }
   })
-  console.log(data)
+  if(data.code==200){
+    tableData.splice(index, 1)
+  }
 }
 
 async function deny(index){
@@ -51,7 +53,9 @@ async function deny(index){
       isApproved:false
     }
   })
-  console.log(data)
+  if(data.code==200){
+    tableData.splice(index, 1)
+  }
 }
 </script>
 
