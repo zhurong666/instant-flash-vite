@@ -10,7 +10,8 @@
     </template>
     <el-menu-item-group title="系统统计">
       <el-menu-item index="1-1">系统统计</el-menu-item>
-      <el-menu-item index="1-2" disabled>测试</el-menu-item>
+      <el-menu-item index="1-2">主页内容</el-menu-item>
+      <el-menu-item index="1-3" disabled>测试</el-menu-item>
     </el-menu-item-group>
   </el-sub-menu>
 

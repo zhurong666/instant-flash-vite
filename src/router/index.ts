@@ -28,6 +28,19 @@ const routes: RouteRecordRaw[] = [
         component: () => import("../pages/AboutView.vue")
     },
     {
+        path: '/index',
+        name: 'Index',
+        component: layout,
+        children:[
+            {
+                path: 'set',
+                name: 'Set',
+                meta: { menuId: '1-2' },
+                component: () => import("../components/index/Set.vue")
+            },
+        ]
+    },
+    {
         path: '/user',
         name: 'User',
         component: layout,
