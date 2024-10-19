@@ -20,7 +20,7 @@ onMounted(() => {
 const loadData = async (pageNum = 1, pageSize = 10) => {
   const data = await request({
     method: 'GET',
-    url: "admin/event",
+    url: "admin/event/getWillReviewEvent",
     params: {
       pageNum,
       pageSize,
@@ -30,30 +30,33 @@ const loadData = async (pageNum = 1, pageSize = 10) => {
   tableData.push(...data.data)
 }
 
-async function pass(index){
+async function pass(index) {
   const eventId = tableData[index].id
   const data = await request({
-    url: 'admin/event/'+eventId+"/review",
+    url: 'admin/event/' + eventId + "/review",
     method: 'POST',
+    headers: {
+      toEventId: eventId
+    },
     params: {
-      isApproved:true
+      isApproved: true
     }
   })
-  if(data.code==200){
+  if (data.code == 200) {
     tableData.splice(index, 1)
   }
 }
 
-async function deny(index){
+async function deny(index) {
   const eventId = tableData[index].id
   const data = await request({
-    url: 'admin/event/'+eventId+"/review",
+    url: 'admin/event/' + eventId + "/review",
     method: 'POST',
     params: {
-      isApproved:false
+      isApproved: false
     }
   })
-  if(data.code==200){
+  if (data.code == 200) {
     tableData.splice(index, 1)
   }
 }
@@ -72,7 +75,7 @@ async function deny(index){
       <el-table-column prop="name" label="活动名称" width="120"/>
       <el-table-column label="宣传图片" width="150">
         <template #default="scope">
-          <el-image preview-teleported :src="scope.row.imageUrls" />
+          <el-image preview-teleported :src="scope.row.imageUrls"/>
         </template>
       </el-table-column>
       <el-table-column prop="category" label="活动类型" width="120"/>

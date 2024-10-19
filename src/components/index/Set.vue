@@ -44,8 +44,8 @@ const submit = () => {
   })
 }
 
-const submit2 = () => {
-  const data = request<object>({
+const submit2 = async () => {
+  const {data} = await request<object>({
     url: "index/swiper",
     method: "get",
   })
