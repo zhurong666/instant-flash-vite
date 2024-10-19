@@ -7,8 +7,8 @@ export interface LoginRequestData {
   verifyCode: string
 }
 
-export type LoginCodeResponseData = ApiResponseData<string>
+export type LoginCodeResponseData = Resp<string>
 
-export type LoginResponseData = ApiResponseData<{ token: string }>
+export type LoginResponseData = Resp<{ token: string }>
 
-export type UserInfoResponseData = ApiResponseData<{ username: string; roles: string[] }>
+export type UserInfoResponseData = Resp<{ username: string; roles: string[] }>

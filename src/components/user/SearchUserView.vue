@@ -1,42 +1,89 @@
 <script setup lang="ts">
-import {ref} from "vue";
+import {reactive, ref} from "vue";
 import {Search} from '@element-plus/icons-vue'
 import router from "@/router";
+import {searchApi} from "@/api/event";
+import {SearchResponseData} from "@/api/login/types/search.ts";
 
 const inputTxt = ref("")
 
 const handleClick = (userId) => {
   router.push({
-    path:`/user/detail/${1}`,
+    path: `/user/detail/${1}`,
   })
 }
 
-const tableData = [
+const tableData = reactive<SearchResponseData[]>([])
+const searchType = ref(1)
+
+const options = [
   {
-    userId: '1001',
-    phone: '110',
-    email: '27@gmail.com',
-    city: 'Los Angeles',
-    username: '小宋',
-    gender: '男',
-    integral: '0',
-    reputation: '99',
-    address: '四川省成都市温江区',
-    lastAddress: '四川省成都市温江区',
-    lastTime: '2024-10-02 09:00:00',
-    reputation: '99',
+    value: 1,
+    label: '用户Id',
+  },
+  {
+    value: 2,
+    label: '手机号码',
+  },
+  {
+    value: 3,
+    label: '邮箱地址',
+  },
+  {
+    value: 4,
+    label: '身份证号',
   }
 ]
+
+const searchEnter = async (text) => {
+  let url = "/admin/user"
+  switch (searchType.value) {
+    case 1:
+      url += ""
+      break
+    case 2:
+      url += "/phone"
+      break
+    case 3:
+      url += "/email"
+      break
+    case 4:
+      url += "/idCard"
+      break
+  }
+  url += "/" + text
+  const resp = await searchApi(url)
+  if (resp.code == 200) {
+    tableData.splice(0)
+    const data = resp.data
+    console.log(data)
+    tableData.push(data)
+  }
+}
 
 const centerDialogVisible = ref(false)
 </script>
 
 <template>
   <div class="input-container">
+    <el-select
+        v-model="searchType"
+        placeholder="Select"
+        size="large"
+        style="width: 120px"
+    >
+      <el-option
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+      />
+    </el-select>
     <el-input
         v-model="inputTxt"
         size="large"
         :prefix-icon="Search"
+        @change="searchEnter"
         clearable
         placeholder="请输入要查找的用户">
     </el-input>
@@ -47,7 +94,7 @@ const centerDialogVisible = ref(false)
         :data="tableData"
         size="large"
         style="width: 100%">
-      <el-table-column fixed prop="userId" label="用户编号" width="150"/>
+      <el-table-column fixed prop="id" label="用户编号" width="150"/>
       <el-table-column prop="phone" label="手机号码" width="150"/>
       <el-table-column prop="email" label="用户邮箱" width="180"/>
       <el-table-column prop="username" label="用户昵称" width="120"/>
@@ -60,7 +107,8 @@ const centerDialogVisible = ref(false)
       <el-table-column fixed="right" label="操作" min-width="120">
         <template #default>
           <el-button link type="primary" size="small"
-                     @click="handleClick">详情</el-button>
+                     @click="handleClick">详情
+          </el-button>
           <el-button link type="primary" size="small">编辑</el-button>
           <el-button link type="primary" size="small">禁言</el-button>
         </template>
