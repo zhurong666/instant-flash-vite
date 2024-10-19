@@ -1,14 +1,12 @@
 <script setup lang="ts">
-import {ref} from "vue";
+import {reactive, ref} from "vue";
 import {Search} from '@element-plus/icons-vue'
 
 const inputTxt = ref("")
 
-const handleClick = () => {
-  console.log('click')
-}
+const centerDialogVisible = ref(false)
 
-const tableData = [
+const tableData = reactive([
   {
     date: '2016-05-03',
     name: 'Tom',
@@ -17,17 +15,12 @@ const tableData = [
     address: 'No. 189, Grove St, Los Angeles',
     zip: 'CA 90036',
     tag: 'Home',
-  },
-  {
-    date: '2016-05-02',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-    tag: 'Office',
   }
-]
+])
+
+const handleClick = () => {
+
+}
 </script>
 
 <template>
@@ -59,9 +52,12 @@ const tableData = [
       <el-table-column fixed="right" label="操作" min-width="120">
         <template #default>
           <el-button link type="primary" size="small"
-                     @click="handleClick">详情</el-button>
-          <el-button link type="primary" size="small">编辑</el-button>
-          <el-button link type="primary" size="small">禁言</el-button>
+                     @click="handleClick">详情
+          </el-button>
+          <el-button link type="primary" size="small"
+                     @click="centerDialogVisible=true">编辑</el-button>
+          <el-button link type="primary" size="small"
+                     @click="centerDialogVisible=true">禁言</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -74,6 +70,48 @@ const tableData = [
         :total="100"
     />
   </div>
+  <el-dialog
+      v-model="centerDialogVisible"
+      title="修改用户信息"
+      width="500"
+      align-center
+  >
+    <span>你正在查看某个用户的信息</span>
+    <template #footer>
+      <div class="dialog-content">
+        <div>
+          <el-text class="mx-1">用户名称：</el-text>
+          <el-text class="mx-1">张中阳</el-text>
+        </div>
+        <div>
+          <el-text class="mx-1">用户名称：</el-text>
+          <el-text class="mx-1">张中阳</el-text>
+        </div>
+        <div>
+          <el-text class="mx-1">用户名称：</el-text>
+          <el-text class="mx-1">张中阳</el-text>
+        </div>
+        <div>
+          <el-text class="mx-1">用户名称：</el-text>
+          <el-text class="mx-1">张中阳</el-text>
+        </div>
+        <div>
+          <el-text class="mx-1">用户名称：</el-text>
+          <el-text class="mx-1">张中阳</el-text>
+        </div>
+        <div>
+          <el-text class="mx-1">用户名称：</el-text>
+          <el-text class="mx-1">张中阳</el-text>
+        </div>
+      </div>
+      <div class="dialog-footer">
+        <el-button @click="centerDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="centerDialogVisible = false">
+          关闭
+        </el-button>
+      </div>
+    </template>
+  </el-dialog>
 </template>
 
 <style scoped>

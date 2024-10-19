@@ -7,13 +7,8 @@ import {SearchResponseData} from "@/api/login/types/search.ts";
 
 const inputTxt = ref("")
 
-const handleClick = (userId) => {
-  router.push({
-    path: `/user/detail/${1}`,
-  })
-}
-
 const tableData = reactive<SearchResponseData[]>([])
+const centerDialogVisible = ref(false)
 const searchType = ref(1)
 
 const options = [
@@ -34,6 +29,12 @@ const options = [
     label: '身份证号',
   }
 ]
+
+const handleClick = (userId) => {
+  router.push({
+    path: `/user/detail/${1}`,
+  })
+}
 
 const searchEnter = async (text) => {
   let url = "/admin/user"
@@ -61,7 +62,6 @@ const searchEnter = async (text) => {
   }
 }
 
-const centerDialogVisible = ref(false)
 </script>
 
 <template>
@@ -109,8 +109,12 @@ const centerDialogVisible = ref(false)
           <el-button link type="primary" size="small"
                      @click="handleClick">详情
           </el-button>
-          <el-button link type="primary" size="small">编辑</el-button>
-          <el-button link type="primary" size="small">禁言</el-button>
+          <el-button link type="primary" size="small"
+                     @click="centerDialogVisible=true">编辑
+          </el-button>
+          <el-button link type="primary" size="small"
+                     @click="centerDialogVisible=true">禁言
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
