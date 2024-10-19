@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div>4</div>
+  <div>创建用户</div>
 </template>
 
 <style scoped>
