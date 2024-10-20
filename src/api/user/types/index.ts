@@ -1,4 +1,4 @@
-interface SearchResult {
+export interface UserInfo {
     id: number,
     phone: string,
     email: string,
@@ -18,5 +18,3 @@ interface SearchResult {
     lastAddress: string,
     lastTime: Date,
 }
-
-export type SearchResponseData = Resp<SearchResult>

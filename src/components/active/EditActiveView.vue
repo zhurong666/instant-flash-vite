@@ -3,30 +3,9 @@
 import {baseURL} from "@/utils/service.ts";
 import {Plus} from "@element-plus/icons-vue";
 import {reactive} from "vue";
+import {EditEvent} from "@/api/event";
 
-interface EditEvent {
-  eventId:number,
-  userId:number,
-  name:string,
-  category:number,
-  targetGroupId:number,
-  regStartTime:Date,
-  regEndTime:Date,
-  startTime:Date,
-  endTime:Date,
-  currentParticipant:number,
-  minParticipant:number,
-  audit:number,
-  maxParticipant:number,
-  inviteCode:number,
-  radius:number,
-  latitude:number,
-  contact:number,
-  status:number,
-  imageUrls:string,
-  description:string,
-  createTime:Date,
-}
+
 
 const editEvent = reactive<EditEvent>({
   eventId: 1,

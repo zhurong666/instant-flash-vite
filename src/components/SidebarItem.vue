@@ -23,8 +23,8 @@
     <el-menu-item-group title="用户管理">
       <el-menu-item index="2-1">创建用户</el-menu-item>
       <el-menu-item index="2-2">查找用户</el-menu-item>
-      <el-menu-item index="2-3">用户详情</el-menu-item>
-      <el-menu-item index="2-4">编辑用户</el-menu-item>
+      <el-menu-item index="2-3" disabled>用户详情</el-menu-item>
+      <el-menu-item index="2-4" disabled>编辑用户</el-menu-item>
     </el-menu-item-group>
   </el-sub-menu>
 
@@ -35,9 +35,9 @@
     </template>
     <el-menu-item-group title="活动管理">
       <el-menu-item index="3-1">活动审核</el-menu-item>
-      <el-menu-item index="3-2">活动编辑</el-menu-item>
+      <el-menu-item index="3-2" disabled>活动编辑</el-menu-item>
       <el-menu-item index="3-3">活动查找</el-menu-item>
-      <el-menu-item index="3-4">活动详情</el-menu-item>
+      <el-menu-item index="3-4" disabled>活动详情</el-menu-item>
     </el-menu-item-group>
   </el-sub-menu>
 </template>

@@ -5,8 +5,9 @@ import {defineStore} from "pinia"
 // import { useSettingsStore } from "./settings"
 import {getToken, removeToken, setToken} from "@/utils/cache/cookies"
 import {resetRouter} from "@/router"
-import {loginApi, getUserInfoApi} from "@/api/login"
+import {loginApi} from "@/api/login"
 import {type LoginRequestData} from "@/api/login/types/login"
+import {getUserInfoApi} from "../../api/user";
 // import routeSettings from "@/config/route"
 
 export const useUserStore = defineStore("user", () => {

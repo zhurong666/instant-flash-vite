@@ -30,9 +30,9 @@ const options = [
   }
 ]
 
-const handleClick = (userId) => {
+const handleClick = (index) => {
   router.push({
-    path: `/user/detail/${1}`,
+    path: `/user/detail/${tableData.at(index).id}`,
   })
 }
 
@@ -105,9 +105,9 @@ const searchEnter = async (text) => {
       <el-table-column prop="lastAddress" label="最后上线所在地" width="220"/>
       <el-table-column prop="lastTime" label="最后上线时间" width="180"/>
       <el-table-column fixed="right" label="操作" min-width="120">
-        <template #default>
+        <template #default="scope">
           <el-button link type="primary" size="small"
-                     @click="handleClick">详情
+                     @click="handleClick(scope.$index)">详情
           </el-button>
           <el-button link type="primary" size="small"
                      @click="centerDialogVisible=true">编辑
