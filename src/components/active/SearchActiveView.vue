@@ -25,6 +25,13 @@ const tableData = reactive([])
 const handleClick = () => {
 
 }
+const edit = () => {
+
+}
+
+const deny = () => {
+
+}
 const searchEnter = async (text) => {
   let url = "/admin/event/searchByEventId"
   switch (searchType.value) {
@@ -97,7 +104,7 @@ const searchEnter = async (text) => {
           <el-button link type="primary" size="small"
                      @click="handleClick(scope.$index)">详情
           </el-button>
-          <el-button link type="primary" size="small" @click="pass(scope.$index)">通过</el-button>
+          <el-button link type="primary" size="small" @click="edit(scope.$index)">修改</el-button>
           <el-button link type="primary" size="small" @click="deny(scope.$index)">打回</el-button>
         </template>
       </el-table-column>
