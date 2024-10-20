@@ -4,7 +4,6 @@ import {baseURL} from "@/utils/service.ts";
 import {Plus} from "@element-plus/icons-vue";
 import type {UploadUserFile} from "element-plus";
 import {getCity} from "@/api";
-import {converse} from "@/utils/city.ts";
 
 const value = ref("")
 const state1 = ref('')

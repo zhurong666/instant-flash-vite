@@ -1,36 +1,73 @@
 <script setup lang="ts">
 import {reactive, ref} from "vue";
 import {Search} from '@element-plus/icons-vue'
+import {searchApi} from "@/api/event";
 
+const searchType = ref(1)
+const options = [
+  {
+    value: 1,
+    label: '活动Id',
+    disabled: false
+  },
+  {
+    value: 2,
+    label: '用户Id',
+    disabled: true
+  }
+]
 const inputTxt = ref("")
 
 const centerDialogVisible = ref(false)
 
-const tableData = reactive([
-  {
-    date: '2016-05-03',
-    name: 'Tom',
-    state: 'California',
-    city: 'Los Angeles',
-    address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-    tag: 'Home',
-  }
-])
+const tableData = reactive([])
 
 const handleClick = () => {
 
+}
+const searchEnter = async (text) => {
+  let url = "/admin/event/searchByEventId"
+  switch (searchType.value) {
+    case 1:
+      url += `/${text}`
+      break
+    case 2:
+      url += "???"
+      break
+  }
+  const resp = await searchApi(url)
+  if (resp.code == 200) {
+    tableData.splice(0)
+    const data = resp.data
+    console.log(data)
+    tableData.push(data)
+  }
 }
 </script>
 
 <template>
   <div class="input-container">
+    <el-select
+        v-model="searchType"
+        placeholder="Select"
+        size="large"
+        style="width: 120px"
+    >
+      <el-option
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+          :disabled="item.disabled"
+      />
+    </el-select>
     <el-input
         v-model="inputTxt"
         size="large"
         :prefix-icon="Search"
+        @change="searchEnter"
         clearable
-        placeholder="请输入要查找的用户">
+        placeholder="请输入要查找的活动">
     </el-input>
   </div>
 
@@ -39,25 +76,29 @@ const handleClick = () => {
         :data="tableData"
         size="large"
         style="width: 100%">
-      <el-table-column fixed prop="date" label="用户编号" width="150"/>
-      <el-table-column prop="state" label="手机号码" width="120"/>
-      <el-table-column prop="state" label="用户邮箱" width="120"/>
-      <el-table-column prop="name" label="用户昵称" width="120"/>
-      <el-table-column prop="city" label="性别" width="120"/>
-      <el-table-column prop="address" label="积分" width="120"/>
-      <el-table-column prop="address" label="信誉值" width="120"/>
-      <el-table-column prop="address" label="账号所属地" width="180"/>
-      <el-table-column prop="zip" label="最后上线所在地" width="180"/>
-      <el-table-column prop="zip" label="最后上线时间" width="180"/>
+      <el-table-column fixed prop="id" label="活动编号" width="150"/>
+      <el-table-column prop="userId" label="用户编号" width="150"/>
+      <el-table-column prop="name" label="活动名称" width="120"/>
+      <el-table-column label="宣传图片" width="150">
+        <template #default="scope">
+          <el-image preview-teleported :src="scope.row.imageUrls"/>
+        </template>
+      </el-table-column>
+      <el-table-column prop="category" label="活动类型" width="120"/>
+      <el-table-column prop="targetGroupId" label="目标用户群体" width="120"/>
+      <el-table-column prop="address" label="活动地点" width="220"/>
+      <el-table-column prop="regStartTime" label="报名开始时间" width="180"/>
+      <el-table-column prop="regEndTime" label="报名结束时间" width="180"/>
+      <el-table-column prop="startTime" label="活动开始时间" width="180"/>
+      <el-table-column prop="endTime" label="活动结束时间" width="180"/>
+      <el-table-column prop="maxParticipant" label="最多人数" width="180"/>
       <el-table-column fixed="right" label="操作" min-width="120">
-        <template #default>
+        <template #default="scope">
           <el-button link type="primary" size="small"
-                     @click="handleClick">详情
+                     @click="handleClick(scope.$index)">详情
           </el-button>
-          <el-button link type="primary" size="small"
-                     @click="centerDialogVisible=true">编辑</el-button>
-          <el-button link type="primary" size="small"
-                     @click="centerDialogVisible=true">禁言</el-button>
+          <el-button link type="primary" size="small" @click="pass(scope.$index)">通过</el-button>
+          <el-button link type="primary" size="small" @click="deny(scope.$index)">打回</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -79,26 +120,6 @@ const handleClick = () => {
     <span>你正在查看某个用户的信息</span>
     <template #footer>
       <div class="dialog-content">
-        <div>
-          <el-text class="mx-1">用户名称：</el-text>
-          <el-text class="mx-1">张中阳</el-text>
-        </div>
-        <div>
-          <el-text class="mx-1">用户名称：</el-text>
-          <el-text class="mx-1">张中阳</el-text>
-        </div>
-        <div>
-          <el-text class="mx-1">用户名称：</el-text>
-          <el-text class="mx-1">张中阳</el-text>
-        </div>
-        <div>
-          <el-text class="mx-1">用户名称：</el-text>
-          <el-text class="mx-1">张中阳</el-text>
-        </div>
-        <div>
-          <el-text class="mx-1">用户名称：</el-text>
-          <el-text class="mx-1">张中阳</el-text>
-        </div>
         <div>
           <el-text class="mx-1">用户名称：</el-text>
           <el-text class="mx-1">张中阳</el-text>
