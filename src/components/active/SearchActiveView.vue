@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import {reactive, ref} from "vue";
+import {onMounted, reactive, ref} from "vue";
 import {Search} from '@element-plus/icons-vue'
 import {searchApi} from "@/api/event";
+import {getCityByLatLng} from "@/api";
 
 const searchType = ref(1)
 const options = [
@@ -50,6 +51,11 @@ const searchEnter = async (text) => {
     tableData.push(data)
   }
 }
+
+onMounted(async () => {
+  // const {data} = await getCityByLatLng( 30.0,104.0)
+  // console.log(data)
+})
 </script>
 
 <template>
