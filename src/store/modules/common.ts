@@ -5,47 +5,58 @@ import {getEventStatus, getEventTargetGroupTypes, getEventTypes} from "../../api
 
 export const commonModules = defineStore("common", {
     state: () => ({
-        userType:[],
-        eventType:[],
-        eventTargetGroup:[],
+        userType: [],
+        userStatus: [],
+        eventType: [],
+        eventStatus: [],
+        eventTargetGroup: [],
     }),
     getters: {},
     mutations: {},
     actions: {
-        async initUserType(){
-            if (this.userType.length === 0){
+        async initUserType() {
+            if (this.userType.length === 0) {
                 let data = CommonCache.getUserTypesCache()
                 let data2 = CommonCache.getUserStatusCache()
-                if (data==null || data === "") {
+                if (data == null || data === "") {
                     data = await getUserTypes();
-                    data2 = getUserStatus()
+                    data2 = await getUserStatus()
                     CommonCache.setUserTypesCache(data.data)
                     CommonCache.setUserStatusCache(data2.data)
+                    this.userType = data.data
+                    this.userStatus = data2.data
+                }else {
+                    this.userType = data
+                    this.userStatus = data2
                 }
-                this.userType = data.data
             }
         },
-        async initEventType(){
-            if (this.userType.length === 0){
+        async initEventType() {
+            if (this.eventType.length === 0) {
                 let data = CommonCache.getEventTypesCache()
                 let data2 = CommonCache.getEventStatusCache()
-                if (data==null || data === "") {
+                if (data == null || data === "") {
                     data = await getEventTypes();
                     data2 = await getEventStatus();
                     CommonCache.setEventTypesCache(data.data)
                     CommonCache.setEventStatusCache(data2.data)
+                    this.eventType = data.data
+                    this.eventStatus = data2.data
+                }else {
+                    this.eventType = data
+                    this.eventStatus = data2
                 }
-                this.userType = data.data
             }
         },
-        async initEventTargetGroupType(){
-            if (this.userType.length === 0){
+        async initEventTargetGroupType() {
+            if (this.eventTargetGroup.length === 0) {
                 let data = CommonCache.getEventTargetGroupTypesCache()
-                if (data==null || data === "") {
+                if (data == null || data === "") {
                     data = await getEventTargetGroupTypes();
                     CommonCache.setEventTargetGroupTypesCache(data.data)
-                }
-                this.userType = data.data
+                    this.eventTargetGroup = data.data
+                } else
+                    this.eventTargetGroup = data
             }
         }
     },

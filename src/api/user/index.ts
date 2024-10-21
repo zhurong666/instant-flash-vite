@@ -31,14 +31,14 @@ export function denyUser(userId: number) {
 /** 获取用户详情 */
 export function getUserTypes() {
     return request<string>({
-        url: "common/eventCategory",
+        url: "common/getCityList",
         method: "get"
     })
 }
 
 export function getUserStatus() {
     return request<string>({
-        url: "common/eventCategory",
+        url: "common/userStatus",
         method: "get"
     })
 }

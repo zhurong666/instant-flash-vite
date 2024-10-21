@@ -35,7 +35,7 @@ export function getEventTypes() {
 
 export function getEventStatus() {
     return request<string>({
-        url: "common/eventCategory",
+        url: "common/eventStatus",
         method: "get"
     })
 }
