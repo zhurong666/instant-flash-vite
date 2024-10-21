@@ -38,6 +38,7 @@
       <el-menu-item index="3-2" disabled>活动编辑</el-menu-item>
       <el-menu-item index="3-3">活动查找</el-menu-item>
       <el-menu-item index="3-4" disabled>活动详情</el-menu-item>
+      <el-menu-item index="3-5" disabled>活动成员详情</el-menu-item>
     </el-menu-item-group>
   </el-sub-menu>
 </template>

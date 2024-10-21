@@ -3,6 +3,7 @@
 import {onMounted, reactive, ref, watch} from "vue";
 import {EditEvent, getEventById} from "@/api/event";
 import {useRoute} from "vue-router";
+import router from "@/router";
 
 const {params} = useRoute()
 
@@ -61,6 +62,12 @@ const submit = () => {
     }
   })
   console.log(temp)
+}
+
+const gotoEventMemberView = () => {
+  router.push({
+    path: "/active/checkMemberActive/" + params.id
+  })
 }
 </script>
 
@@ -139,7 +146,9 @@ const submit = () => {
       <span>当前人数</span>
       <input class="edit-input" type="text" name="category"
              :placeholder="placeholderEvent.currentParticipant"
+             disabled
              v-model="editEvent.currentParticipant">
+      <el-button @click="gotoEventMemberView">审查</el-button>
     </div>
     <div class="item">
       <span>最多人数</span>

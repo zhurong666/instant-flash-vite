@@ -100,6 +100,12 @@ const routes: RouteRecordRaw[] = [
                 meta: { menuId: '3-4' },
                 component: () => import("../components/active/ActiveDetailsView.vue")
             },
+            {
+                path: 'checkMemberActive/:id',
+                name: 'CheckMemberActive',
+                meta: { menuId: '3-5' },
+                component: () => import("../components/active/CheckMemberActiveView.vue")
+            },
         ],
     }
 ]

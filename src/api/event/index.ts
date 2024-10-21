@@ -26,6 +26,26 @@ export function denyEvent(eventId: number) {
 }
 
 
+export function getEventTypes() {
+    return request<string>({
+        url: "common/eventCategory",
+        method: "get"
+    })
+}
+
+export function getEventStatus() {
+    return request<string>({
+        url: "common/eventCategory",
+        method: "get"
+    })
+}
+
+export function getEventTargetGroupTypes() {
+    return request<string>({
+        url: "common/eventTargetGroups",
+        method: "get"
+    })
+}
 export interface EditEvent {
     eventId: number,
     userId: number,
