@@ -3,8 +3,6 @@
 import {onMounted, reactive, ref, watch} from "vue";
 import {EditEvent, getEventById} from "@/api/event";
 import {useRoute} from "vue-router";
-import type {UploadUserFile} from "element-plus";
-import {getCityByLatLng} from "@/api";
 
 const {params} = useRoute()
 
@@ -24,21 +22,11 @@ const statusOptions = [
     disabled: true,
   }
 ]
-const fileList = ref<UploadUserFile[]>([])
 
-const uploadObj1 = reactive([
-  {
-    id: 1,
-    title: "",
-    aboutUrl: "",
-    imgUrl: ""
-  }
-])
-
-watch(()=>placeholderEvent.value.latitude,async ()=>{
+watch(() => placeholderEvent.value.latitude, async () => {
   // const {data:{data}} = await getCityByLatLng(placeholderEvent.value.latitude,placeholderEvent.value.longitude)
   const data = {
-    address:"成都市"
+    address: "成都市"
   }
   console.log(data)
   placeholderEvent.value.location = data.address;
@@ -57,7 +45,7 @@ const loadData = async () => {
   editEvent.endTime = data.data.endTime
 }
 
-const submit = ()=>{
+const submit = () => {
   console.log(editEvent)
   let temp = {
     ...editEvent,
@@ -156,8 +144,8 @@ const submit = ()=>{
     <div class="item">
       <span>最多人数</span>
       <input class="edit-input" type="text" name="category"
-             :placeholder="placeholderEvent.currentParticipant"
-             v-model="editEvent.currentParticipant">
+             :placeholder="placeholderEvent.maxParticipant"
+             v-model="editEvent.maxParticipant">
     </div>
     <div class="item">
       <span>审核方式</span>
