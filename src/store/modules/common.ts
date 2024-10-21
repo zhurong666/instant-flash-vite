@@ -17,12 +17,13 @@ export const commonModules = defineStore("common", {
         async initUserType() {
             if (this.userType.length === 0) {
                 let data = CommonCache.getUserStatusCache()
+                console.log(data)
                 if (Object.keys(data).length === 0) {
                     data = await getUserStatus()
                     CommonCache.setUserStatusCache(data.data)
-                    this.userStatus = data.data
+                    this.userType = data.data
                 }else {
-                    this.userStatus = data
+                    this.userType = data
                 }
             }
         },
