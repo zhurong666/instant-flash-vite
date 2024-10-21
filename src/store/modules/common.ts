@@ -16,18 +16,13 @@ export const commonModules = defineStore("common", {
     actions: {
         async initUserType() {
             if (this.userType.length === 0) {
-                let data = CommonCache.getUserTypesCache()
-                let data2 = CommonCache.getUserStatusCache()
-                if (data == null || data === "") {
-                    data = await getUserTypes();
-                    data2 = await getUserStatus()
-                    CommonCache.setUserTypesCache(data.data)
-                    CommonCache.setUserStatusCache(data2.data)
-                    this.userType = data.data
-                    this.userStatus = data2.data
+                let data = CommonCache.getUserStatusCache()
+                if (Object.keys(data).length === 0) {
+                    data = await getUserStatus()
+                    CommonCache.setUserStatusCache(data.data)
+                    this.userStatus = data.data
                 }else {
-                    this.userType = data
-                    this.userStatus = data2
+                    this.userStatus = data
                 }
             }
         },
@@ -35,7 +30,7 @@ export const commonModules = defineStore("common", {
             if (this.eventType.length === 0) {
                 let data = CommonCache.getEventTypesCache()
                 let data2 = CommonCache.getEventStatusCache()
-                if (data == null || data === "") {
+                if (Object.keys(data).length === 0) {
                     data = await getEventTypes();
                     data2 = await getEventStatus();
                     CommonCache.setEventTypesCache(data.data)
@@ -51,7 +46,7 @@ export const commonModules = defineStore("common", {
         async initEventTargetGroupType() {
             if (this.eventTargetGroup.length === 0) {
                 let data = CommonCache.getEventTargetGroupTypesCache()
-                if (data == null || data === "") {
+                if (Object.keys(data).length === 0) {
                     data = await getEventTargetGroupTypes();
                     CommonCache.setEventTargetGroupTypesCache(data.data)
                     this.eventTargetGroup = data.data
