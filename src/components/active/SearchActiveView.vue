@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import {onMounted, reactive, ref} from "vue";
 import {Search} from '@element-plus/icons-vue'
-import {searchApi} from "@/api/event";
-import {getCityByLatLng} from "@/api";
+import {denyEvent, searchApi} from "@/api/event";
+import router from "@/router";
 
 const searchType = ref(1)
 const options = [
@@ -23,15 +23,20 @@ const centerDialogVisible = ref(false)
 
 const tableData = reactive([])
 
-const handleClick = () => {
-
+const handleClick = (index) => {
+  router.push({
+    path: `/active/detail/${tableData.at(index).id}`,
+  })
 }
-const edit = () => {
-
+const edit = (index) => {
+  router.push({
+    path: `/active/edit/${tableData.at(index).id}`,
+  })
 }
 
-const deny = () => {
-
+const deny = async (index) => {
+  const data = await denyEvent(tableData[index].id)
+  console.log(data)
 }
 const searchEnter = async (text) => {
   let url = "/admin/event/searchByEventId"

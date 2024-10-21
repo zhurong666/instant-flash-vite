@@ -18,3 +18,12 @@ export function updateUserInfo(userInfo: { userId: number }) {
         data: userInfo
     })
 }
+
+/** 获取用户详情 */
+export function denyUser(userId: number) {
+    return request<string>({
+        url: "admin/user/" + userId + "/update",
+        method: "put",
+        headers: {toUserId:userId},
+    })
+}

@@ -8,27 +8,44 @@ export function searchApi(url: string) {
     })
 }
 
+export function getEventById(eventId: number) {
+    return request<SearchResponseData>({
+        url: "/admin/event/searchByEventId/" + eventId,
+        method: "get",
+    })
+}
+
+/** 获取用户详情 */
+export function denyEvent(eventId: number) {
+    return request<string>({
+        url: "admin/event/" + eventId + "/review",
+        method: "post",
+        params: {isApproved: false},
+        headers: {toEventId: eventId},
+    })
+}
+
 
 export interface EditEvent {
-    eventId:number,
-    userId:number,
-    name:string,
-    category:number,
-    targetGroupId:number,
-    regStartTime:Date,
-    regEndTime:Date,
-    startTime:Date,
-    endTime:Date,
-    currentParticipant:number,
-    minParticipant:number,
-    audit:number,
-    maxParticipant:number,
-    inviteCode:number,
-    radius:number,
-    latitude:number,
-    contact:number,
-    status:number,
-    imageUrls:string,
-    description:string,
-    createTime:Date,
+    eventId: number,
+    userId: number,
+    name: string,
+    category: number,
+    targetGroupId: number,
+    regStartTime: Date,
+    regEndTime: Date,
+    startTime: Date,
+    endTime: Date,
+    currentParticipant: number,
+    minParticipant: number,
+    audit: number,
+    maxParticipant: number,
+    inviteCode: number,
+    radius: number,
+    latitude: number,
+    contact: number,
+    status: number,
+    imageUrls: string,
+    description: string,
+    createTime: Date,
 }
