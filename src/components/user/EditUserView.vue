@@ -1,15 +1,19 @@
 <script setup lang="ts">
 import {onMounted, reactive, ref} from "vue";
-import {baseURL} from "@/utils/service.ts";
+import {baseImgURL, baseURL} from "@/utils/service.ts";
 import {Plus} from "@element-plus/icons-vue";
 import type {UploadUserFile} from "element-plus";
 import {getCity} from "@/api";
+import {useRoute} from "vue-router";
+import {getUserInfoApi, updateUserInfo} from "@/api/user";
+
+const {params} = useRoute();
 
 const value = ref("")
-const state1 = ref('')
+const state = ref('')
 
 const editUser = reactive({
-  userId: 1,
+  userId: params.id,
   username: "",
   email: "",
   phone: "",
@@ -22,8 +26,8 @@ const editUser = reactive({
 })
 
 
-const placeholderUser = reactive({
-  userId: 1,
+const placeholderUser = ref({
+  userId: params.id,
   username: "张三",
   email: "",
   phone: "",
@@ -45,7 +49,6 @@ const statusOptions = [
 ]
 
 const uploadSuss = (res) => {
-  console.log(res)
   if (res.code == 200) {
     uploadObj1[fileList.value.length - 1].imgUrl = res.data
   }
@@ -85,6 +88,26 @@ const getData = async () => {
     }
     restaurants.value.push(...values)
   }
+  const userData = await getUserInfoApi(editUser.userId)
+  placeholderUser.value = userData.data
+  console.log(userData.data)
+  editUser.brithDay = userData.data.birthDay
+}
+
+const submit = () => {
+  let o = {
+    ...editUser,
+    brithDay: editUser.brithDay == placeholderUser.value.birthDay ? null : editUser.brithDay,
+  }
+  let temp = Object.keys(o)
+
+  temp.forEach(item => {
+    if (o[item] == "" || o[item] == null) {
+      delete o[item]
+    }
+  })
+  const data = updateUserInfo(o)
+  console.log(data)
 }
 </script>
 
@@ -103,25 +126,25 @@ const getData = async () => {
     <div class="item">
       <span>用户邮箱</span>
       <input class="edit-input" type="text" name="email"
-             :placeholder="placeholderUser.username"
+             :placeholder="placeholderUser.email"
              v-model="editUser.email">
     </div>
     <div class="item">
       <span>手机号码</span>
       <input class="edit-input" type="text" name="phone"
-             :placeholder="placeholderUser.username"
+             :placeholder="placeholderUser.phone"
              v-model="editUser.phone">
     </div>
     <div class="item">
       <span>性别</span>
       <input class="edit-input" type="text" name="gender"
-             :placeholder="placeholderUser.username"
+             :placeholder="placeholderUser.gender"
              v-model="editUser.gender">
     </div>
     <div class="item">
       <span>账号所属地</span>
       <el-autocomplete
-          v-model="state1"
+          v-model="state"
           :fetch-suggestions="querySearch"
           clearable
           class="inline-input w-50"
@@ -132,7 +155,7 @@ const getData = async () => {
     <div class="item">
       <span>社会身份</span>
       <input class="edit-input" type="text" name="identityId"
-             :placeholder="placeholderUser.username"
+             :placeholder="placeholderUser.identityId"
              v-model="editUser.identityId">
     </div>
     <div class="item">
@@ -146,7 +169,7 @@ const getData = async () => {
     </div>
     <div class="item">
       <span>头像</span>
-      <img :src="placeholderUser.avatar" alt="用户头像" srcset="">
+      <img :src="baseImgURL + placeholderUser.avatar" alt="用户头像" class="avatar">
       <el-upload
           class="avatar-uploader"
           v-model:file-list="fileList"
@@ -173,7 +196,7 @@ const getData = async () => {
     </div>
   </div>
   <div class="submit-container">
-    <div class="submit">提交</div>
+    <div class="submit" @click="submit">提交</div>
   </div>
 </template>
 
@@ -230,6 +253,11 @@ const getData = async () => {
       background-color: #0f85d6;
     }
   }
+}
+
+.avatar {
+  width: 60px;
+  height: 60px;
 }
 
 </style>

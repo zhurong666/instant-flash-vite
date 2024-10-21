@@ -35,6 +35,15 @@ const handleClick = (index) => {
     path: `/user/detail/${tableData.at(index).id}`,
   })
 }
+const editClick = (index) => {
+  router.push({
+    path: `/user/edit/${tableData.at(index).id}`,
+  })
+}
+const denyClick = (index) => {
+  const id = tableData.at(index).id
+
+}
 
 const searchEnter = async (text) => {
   let url = "/admin/user"
@@ -110,10 +119,10 @@ const searchEnter = async (text) => {
                      @click="handleClick(scope.$index)">详情
           </el-button>
           <el-button link type="primary" size="small"
-                     @click="centerDialogVisible=true">编辑
+                     @click="editClick(scope.$index)">编辑
           </el-button>
           <el-button link type="primary" size="small"
-                     @click="centerDialogVisible=true">禁言
+                     @click="denyClick(scope.$index)">禁言
           </el-button>
         </template>
       </el-table-column>

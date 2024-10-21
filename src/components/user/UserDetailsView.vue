@@ -1,19 +1,26 @@
 <script setup lang="ts">
-import {onMounted, reactive, ref} from "vue";
+import {computed, onMounted, reactive, ref} from "vue";
 import type {UserInfo} from "@/api/user/types";
 import {getUserInfoApi} from "@/api/user";
 import {useRoute} from "vue-router";
+import {baseImgURL, baseURL} from "@/utils/service.ts";
 
-const { query, params } = useRoute();
+const {query, params} = useRoute();
 const userInfo = ref<UserInfo>({})
 
 onMounted(() => {
   loadData()
 })
-async function loadData(){
-  const {data} =await getUserInfoApi(params.id)
+
+async function loadData() {
+  const {data} = await getUserInfoApi(params.id)
   userInfo.value = data
 }
+
+
+const location = computed(() => {
+  return ""
+})
 </script>
 
 <template>
@@ -57,7 +64,7 @@ async function loadData(){
     <div class="user-info">
       <div class="item">
         <span>账号所属地</span>
-        <input type="text" disabled :value="userInfo?.location">
+        <input type="text" disabled :value="userInfo?.cityId">
       </div>
       <div class="item">
         <span>最后上线所在地</span>
@@ -75,7 +82,7 @@ async function loadData(){
     <div class="user-info">
       <div class="item">
         <span>用户头像</span>
-        <img :src="userInfo?.avatar" alt="用户头像">
+        <img :src="baseImgURL+userInfo?.avatar" alt="用户头像" class="avatar">
       </div>
     </div>
   </div>
@@ -83,7 +90,6 @@ async function loadData(){
 
 <style scoped lang="less">
 .user-info-container {
-
   .user-info {
     width: 100%;
     display: grid;
@@ -110,6 +116,12 @@ async function loadData(){
         padding: 5px;
       }
     }
+  }
+
+  .avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 40px;
   }
 }
 </style>

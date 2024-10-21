@@ -122,3 +122,4 @@ const service = createService()
 /** 用于网络请求的方法 */
 export const request = createRequest(service)
 export const baseURL = import.meta.env.VITE_BASE_API
+export const baseImgURL = "http://139.9.87.80:9000/"
