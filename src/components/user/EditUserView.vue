@@ -106,6 +106,10 @@ const submit = () => {
       delete o[item]
     }
   })
+  if (Object.keys(o).length <= 1) {
+    alert("你没有修改任何东西")
+    return
+  }
   const data = updateUserInfo(o)
   console.log(data)
 }
