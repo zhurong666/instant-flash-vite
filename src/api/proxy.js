@@ -2,6 +2,7 @@
 const { createProxyMiddleware } = require('http-proxy-middleware')
 
 module.exports = (req, res) => {
+    console.log("我被重写了")
     let target = ''
     // 根据请求路径，设置代理目标地址
     if (req.url.startsWith('/backend')) {
