@@ -1,7 +1,7 @@
 // api/proxy.js
 import {createProxyMiddleware} from 'http-proxy-middleware';
 
-module.exports = (req, res) => {
+export default (req, res) => {
     let target = ''
     // 根据请求路径，设置代理目标地址
     if (req.url.startsWith('/backend')) {
