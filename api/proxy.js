@@ -1,5 +1,5 @@
 // api/proxy.js
-const {createProxyMiddleware} = require('http-proxy-middleware')
+import {createProxyMiddleware} from 'http-proxy-middleware';
 
 module.exports = (req, res) => {
     let target = ''
