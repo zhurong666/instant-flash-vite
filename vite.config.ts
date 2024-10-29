@@ -17,7 +17,7 @@ export default defineConfig({
             // '/foo': 'http://localhost:4567',
             // 选项写法
             '/api': {
-                target: 'http://localhost:8080',
+                target: 'http://139.9.87.80:8080',
                 changeOrigin: true,
                 rewrite: (path) => path.replace(/^\/api/, '')
             },
