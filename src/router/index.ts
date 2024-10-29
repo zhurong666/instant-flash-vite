@@ -111,7 +111,9 @@ const routes: RouteRecordRaw[] = [
 ]
 
 const router = createRouter({
-    history: createWebHistory(import.meta.env.BASE_URL),
+    history: import.meta.env.MODE === 'production'
+        ? createWebHashHistory(import.meta.env.BASE_URL)
+        : createWebHistory(import.meta.env.BASE_URL),
     routes,
 })
 
