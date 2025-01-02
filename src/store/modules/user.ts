@@ -1,5 +1,5 @@
 import {ref} from "vue"
-// import store from "@/store"
+import store from "@/store"
 import {defineStore} from "pinia"
 // import { useTagsViewStore } from "./tags-view"
 // import { useSettingsStore } from "./settings"

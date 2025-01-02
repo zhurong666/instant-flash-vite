@@ -94,7 +94,7 @@ const getData = async () => {
   editUser.brithDay = userData.data.birthDay
 }
 
-const submit = () => {
+const submit = async () => {
   let o = {
     ...editUser,
     brithDay: editUser.brithDay == placeholderUser.value.birthDay ? null : editUser.brithDay,
@@ -110,8 +110,13 @@ const submit = () => {
     alert("你没有修改任何东西")
     return
   }
-  const data = updateUserInfo(o)
+  const data = await updateUserInfo(o)
   console.log(data)
+  if (data.code == 200) {
+    alert("修改成功")
+  }else {
+    alert("修改失败")
+  }
 }
 </script>
 
