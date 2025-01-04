@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import {onMounted, reactive, ref} from "vue";
+import {computed, onMounted, reactive, ref} from "vue";
 import {Search} from '@element-plus/icons-vue'
 import {denyEvent, searchApi} from "@/api/event";
 import router from "@/router";
+import {request} from "@/utils/service";
+import {b} from "vite/dist/node/types.d-aGj9QkWt";
 
 const searchType = ref(1)
 const options = [
@@ -35,9 +37,24 @@ const edit = (index) => {
 }
 
 const deny = async (index) => {
-  const data = await denyEvent(tableData[index].id)
-  console.log(data)
+  const eventId = tableData[index].id
+  const status = tableData[index].status
+  const data = await request({
+    url: 'admin/event/' + eventId + "/review",
+    method: 'POST',
+    headers: {
+      toEventId: eventId
+    },
+    params: {
+      isApproved: cup2(status)
+    }
+  })
+  if (data.code == 200) {
+    tableData.splice(index, 1)
+  }
 }
+
+
 const searchEnter = async (text) => {
   let url = "/admin/event/searchByEventId"
   switch (searchType.value) {
@@ -54,6 +71,20 @@ const searchEnter = async (text) => {
     const data = resp.data
     console.log(data)
     tableData.push(data)
+  }
+}
+
+function cup(stauts: number): string {
+  return cup2(stauts) ? "通过" : "打回"
+}
+
+function cup2(stauts: number): boolean {
+  switch (stauts) {
+    case 0:
+    case 1:
+      return true;
+    default:
+      return false;
   }
 }
 
@@ -116,7 +147,8 @@ onMounted(async () => {
                      @click="handleClick(scope.$index)">详情
           </el-button>
           <el-button link type="primary" size="small" @click="edit(scope.$index)">修改</el-button>
-          <el-button link type="primary" size="small" @click="deny(scope.$index)">打回</el-button>
+          <el-button link type="primary" size="small" @click="deny(scope.$index)">{{ cup(scope.row.status) }}
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
