@@ -1,16 +1,23 @@
 <script setup lang="ts">
 import {onMounted, reactive, ref, watch} from "vue";
-import {getEventById} from "@/api/event";
+import {getEventById, getEventMemberById} from "@/api/event";
 import {useRoute} from "vue-router";
+import {baseImgURL} from "@/utils/service";
 
 const {params} = useRoute()
 const placeholderEvent = ref({})
-onMounted(()=>{
+onMounted(() => {
   loadData()
 })
 const loadData = async () => {
   const data = await getEventById(params.id)
   placeholderEvent.value = data.data
+  const {data: data2}: { data: [] } = await getEventMemberById(params.id)
+  data2.forEach(item => {
+    item.avatar = baseImgURL + item.avatar
+  })
+  console.log(data2)
+  tableData.value = data2
 }
 
 watch(() => placeholderEvent.value.latitude, async () => {
@@ -21,6 +28,14 @@ watch(() => placeholderEvent.value.latitude, async () => {
   console.log(data)
   placeholderEvent.value.location = data.address;
 })
+
+const tableData = ref([
+  {
+    id: 1,
+    username: 'Tom',
+    avatar: 'default.png',
+  }
+])
 
 </script>
 
@@ -41,7 +56,7 @@ watch(() => placeholderEvent.value.latitude, async () => {
       </div>
       <div class="item">
         <span>活动宣传图片</span>
-        <img :src="placeholderEvent.imageUrls" alt="用户头像" class="avatar">
+        <img :src="placeholderEvent.imageUrls" alt="活动图片" class="avatar">
       </div>
       <div class="item">
         <span>活动类型</span>
@@ -102,6 +117,18 @@ watch(() => placeholderEvent.value.latitude, async () => {
         <input type="text" disabled :value="placeholderEvent.statusId">
       </div>
     </div>
+    <div class="user-list">
+      <div>活动成员列表</div>
+      <el-table :data="tableData" style="width: 100%">
+        <el-table-column prop="id" label="用户Id" width="180"/>
+        <el-table-column prop="username" label="用户名称" width="180"/>
+        <el-table-column label="用户名称" width="180">
+          <template #default="scope">
+            <el-image style="width: 60px; height: 60px" :src="scope.row.avatar" fit="cover"></el-image>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
   </div>
 </template>
 
@@ -115,15 +142,25 @@ watch(() => placeholderEvent.value.latitude, async () => {
     grid-template-columns:1fr 1fr 1fr;
     margin-bottom: 60px;
 
+    .avatar {
+      width: 220px;
+      height: 220px;
+    }
+
     .item span {
       min-width: 100px;
       display: inline-block;
       text-align-last: justify;
+
       &:first-child:after {
         content: ":";
         margin: 0 10px 0 5px;
       }
     }
+  }
+
+  .user-list {
+    width: 40%;
   }
 }
 </style>

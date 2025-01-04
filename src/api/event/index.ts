@@ -15,6 +15,13 @@ export function getEventById(eventId: number) {
     })
 }
 
+export function getEventMemberById(eventId: number) {
+    return request<any>({
+        url: "/event/getMembers/" + eventId,
+        method: "get",
+    })
+}
+
 /** 获取用户详情 */
 export function denyEvent(eventId: number) {
     return request<string>({
