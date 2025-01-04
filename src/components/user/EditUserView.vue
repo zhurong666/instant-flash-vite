@@ -50,7 +50,9 @@ const statusOptions = [
 
 const uploadSuss = (res) => {
   if (res.code == 200) {
-    uploadObj1[fileList.value.length - 1].imgUrl = res.data
+    const avatar = res.data as string;
+    console.log(avatar)
+    editUser.avatar = avatar.replace("my-bucket/","")
   }
 }
 

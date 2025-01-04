@@ -14,7 +14,7 @@ export function updateUserInfo(userInfo: { userId: number }) {
     return request<string>({
         url: "admin/user/" + userInfo.userId + "/update",
         method: "put",
-        headers: {toUserId:userInfo.userId},
+        headers: {toUserId: userInfo.userId},
         data: userInfo
     })
 }
@@ -24,7 +24,7 @@ export function denyUser(userId: number) {
     return request<string>({
         url: "admin/user/" + userId + "/update",
         method: "put",
-        headers: {toUserId:userId},
+        headers: {toUserId: userId},
     })
 }
 
@@ -42,3 +42,18 @@ export function getUserStatus() {
         method: "get"
     })
 }
+
+
+/** 更新用户详情 */
+export function updateUserStatus(userInfo: { userId: number, status: number }) {
+    return request<string>({
+        url: "admin/user/" + userInfo.userId + "/status",
+        method: "put",
+        headers: {toUserId: userInfo.userId},
+        params: {
+            status:userInfo.status
+        },
+        data: userInfo
+    })
+}
+

@@ -4,6 +4,8 @@ import {Search} from '@element-plus/icons-vue'
 import router from "@/router";
 import {searchApi} from "@/api/event";
 import {SearchResponseData} from "@/api/login/types/search.ts";
+import {updateUserStatus} from "@/api/user";
+import {tLog} from "@/utils/tip";
 
 const inputTxt = ref("")
 
@@ -40,9 +42,14 @@ const editClick = (index) => {
     path: `/user/edit/${tableData.at(index).id}`,
   })
 }
-const denyClick = (index) => {
-  const id = tableData.at(index).id
-
+const denyClick = async (index) => {
+  const user = tableData.at(index);
+  const userId = user.id
+  const statusId = user.statusId
+  const data = await updateUserStatus({userId, status: statusId === 1 ? 0 : 1})
+  tLog(data,()=>{
+    tableData.at(index).statusId = statusId === 1 ? 0 : 1
+  })
 }
 
 const searchEnter = async (text) => {
@@ -122,7 +129,7 @@ const searchEnter = async (text) => {
                      @click="editClick(scope.$index)">编辑
           </el-button>
           <el-button link type="primary" size="small"
-                     @click="denyClick(scope.$index)">禁言
+                     @click="denyClick(scope.$index)">{{ scope.row.statusId == 1 ? '禁言' : '解封' }}
           </el-button>
         </template>
       </el-table-column>
