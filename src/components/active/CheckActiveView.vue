@@ -52,6 +52,9 @@ async function deny(index) {
   const data = await request({
     url: 'admin/event/' + eventId + "/review",
     method: 'POST',
+    headers: {
+      toEventId: eventId
+    },
     params: {
       isApproved: false
     }
