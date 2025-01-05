@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {onMounted, reactive, ref} from "vue";
+import {getCurrentInstance, onMounted, reactive, ref} from "vue";
 import router from "@/router";
 import {request} from "@/utils/service.ts";
 
@@ -30,7 +30,7 @@ const loadData = async (pageNum = 1, pageSize = 10) => {
   tableData.push(...data.data)
 }
 
-async function pass(index) {
+async function commit() {
   const eventId = tableData[index].id
   const data = await request({
     url: 'admin/event/' + eventId + "/review",
@@ -39,30 +39,25 @@ async function pass(index) {
       toEventId: eventId
     },
     params: {
-      isApproved: true
+      isApproved,
+      reason:msg.value
     }
   })
   if (data.code == 200) {
     tableData.splice(index, 1)
   }
+  showCommit.value = false
 }
-
-async function deny(index) {
-  const eventId = tableData[index].id
-  const data = await request({
-    url: 'admin/event/' + eventId + "/review",
-    method: 'POST',
-    headers: {
-      toEventId: eventId
-    },
-    params: {
-      isApproved: false
-    }
-  })
-  if (data.code == 200) {
-    tableData.splice(index, 1)
-  }
+const that = getCurrentInstance()
+let index = 0
+let isApproved = false
+const showCommitM = (index: number, isApproved: boolean) => {
+  that.index = index
+  that.isApproved = isApproved
+  showCommit.value = true
 }
+const showCommit = ref(false)
+const msg = ref('')
 </script>
 
 <template>
@@ -94,8 +89,8 @@ async function deny(index) {
           <el-button link type="primary" size="small"
                      @click="handleClick(scope.$index)">详情
           </el-button>
-          <el-button link type="primary" size="small" @click="pass(scope.$index)">通过</el-button>
-          <el-button link type="primary" size="small" @click="deny(scope.$index)">打回</el-button>
+          <el-button link type="primary" size="small" @click="showCommitM(scope.$index,true)">通过</el-button>
+          <el-button link type="primary" size="small" @click="showCommitM(scope.$index,false)">打回</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -147,6 +142,25 @@ async function deny(index) {
         <el-button @click="centerDialogVisible = false">取消</el-button>
         <el-button type="primary" @click="centerDialogVisible = false">
           关闭
+        </el-button>
+      </div>
+    </template>
+  </el-dialog>
+
+  <el-dialog
+      v-model="showCommit"
+      title="Tips"
+      width="500"
+      center
+  >
+    <el-form-item label="用户名称：">
+      <el-input v-model="msg"/>
+    </el-form-item>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="centerDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="commit">
+          确认
         </el-button>
       </div>
     </template>

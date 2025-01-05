@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import {computed, onMounted, reactive, ref} from "vue";
+import {computed, getCurrentInstance, onMounted, reactive, ref} from "vue";
 import {Search} from '@element-plus/icons-vue'
 import {denyEvent, searchApi} from "@/api/event";
 import router from "@/router";
 import {request} from "@/utils/service";
 import {b} from "vite/dist/node/types.d-aGj9QkWt";
 
+const that = getCurrentInstance()
 const searchType = ref(1)
 const options = [
   {
@@ -36,7 +37,7 @@ const edit = (index) => {
   })
 }
 
-const deny = async (index) => {
+async function commit() {
   const eventId = tableData[index].id
   const status = tableData[index].status
   const data = await request({
@@ -52,8 +53,15 @@ const deny = async (index) => {
   if (data.code == 200) {
     tableData.splice(index, 1)
   }
+  showCommit.value = false
 }
-
+let index = 0
+const showCommitM = (index: number) => {
+  that.index = index
+  showCommit.value = true
+}
+const showCommit = ref(false)
+const msg = ref('')
 
 const searchEnter = async (text) => {
   let url = "/admin/event/searchByEventId"
@@ -147,7 +155,7 @@ onMounted(async () => {
                      @click="handleClick(scope.$index)">详情
           </el-button>
           <el-button link type="primary" size="small" @click="edit(scope.$index)">修改</el-button>
-          <el-button link type="primary" size="small" @click="deny(scope.$index)">{{ cup(scope.row.status) }}
+          <el-button link type="primary" size="small" @click="showCommitM(scope.$index)">{{ cup(scope.row.status) }}
           </el-button>
         </template>
       </el-table-column>
@@ -179,6 +187,25 @@ onMounted(async () => {
         <el-button @click="centerDialogVisible = false">取消</el-button>
         <el-button type="primary" @click="centerDialogVisible = false">
           关闭
+        </el-button>
+      </div>
+    </template>
+  </el-dialog>
+
+  <el-dialog
+      v-model="showCommit"
+      title="Tips"
+      width="500"
+      center
+  >
+    <el-form-item label="用户名称：">
+      <el-input v-model="msg"/>
+    </el-form-item>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="centerDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="commit">
+          确认
         </el-button>
       </div>
     </template>
