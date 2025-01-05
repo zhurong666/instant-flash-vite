@@ -1,9 +1,10 @@
 <script setup lang="ts">
 
 import {onMounted, reactive, ref, watch} from "vue";
-import {EditEvent, getEventById} from "@/api/event";
+import {EditEvent, getEventById, updateEvent} from "@/api/event";
 import {useRoute} from "vue-router";
 import router from "@/router";
+import * as CommonCache from "@/utils/cache/common";
 
 const {params} = useRoute()
 
@@ -14,15 +15,17 @@ const editEvent = reactive<EditEvent>({
 
 const placeholderEvent = ref({})
 
-const value = ref("")
-
-const statusOptions = [
+const auditOptions = [
   {
+    value: 0,
+    label: "需审核",
+  }, {
     value: 1,
-    label: "正常",
-    disabled: true,
-  }
+    label: "无需审核",
+  },
 ]
+const statusOptions = ref([])
+
 
 watch(() => placeholderEvent.value.latitude, async () => {
   // const {data:{data}} = await getCityByLatLng(placeholderEvent.value.latitude,placeholderEvent.value.longitude)
@@ -35,33 +38,54 @@ watch(() => placeholderEvent.value.latitude, async () => {
 
 onMounted(() => {
   loadData()
+  const eventStatus: [] = CommonCache.getEventStatusCache()
+  statusOptions.value = eventStatus.map(item => {
+    return {
+      value: item.code,
+      label: item.statusText
+    }
+  })
 })
 const loadData = async () => {
   const data = await getEventById(params.id)
-  console.log(data)
+  console.log(data.data)
   placeholderEvent.value = data.data
   editEvent.regStartTime = data.data.regStartTime
   editEvent.regEndTime = data.data.regEndTime
   editEvent.startTime = data.data.startTime
   editEvent.endTime = data.data.endTime
+  editEvent.status = data.data.status
+  editEvent.audit = data.data.audit
 }
+// 通用的清除规则
+const removeUnchangedValues = (editEvent, placeholderEvent) => {
+  let result = { ...editEvent };
 
-const submit = () => {
-  console.log(editEvent)
-  let temp = {
-    ...editEvent,
-    regStartTime: editEvent.regStartTime == placeholderEvent.value.regStartTime ? null : editEvent.regStartTime,
-    regEndTime: editEvent.regEndTime == placeholderEvent.value.regEndTime ? null : editEvent.regEndTime,
-    startTime: editEvent.startTime == placeholderEvent.value.startTime ? null : editEvent.startTime,
-    endTime: editEvent.endTime == placeholderEvent.value.endTime ? null : editEvent.endTime,
-  }
-  let keys = Object.keys(temp)
-  keys.forEach(key => {
-    if (temp[key] == null || temp[key] == "") {
-      delete temp[key]
+  Object.keys(result).forEach(key => {
+    if (result[key] === placeholderEvent.value[key]) {
+      result[key] = null;
     }
-  })
+  });
+
+  // 清除 null 或空字符串的属性
+  Object.keys(result).forEach(key => {
+    if (result[key] == null || result[key] === "") {
+      delete result[key];
+    }
+  });
+
+  return result;
+};
+
+const submit = async () => {
+  console.log(editEvent);
+  // 应用这个通用函数
+  let temp = removeUnchangedValues(editEvent, placeholderEvent);
+
+  // 现在 temp 就是你需要的结果
   console.log(temp)
+  const data = await updateEvent(temp)
+  console.log(data)
 }
 
 const gotoEventMemberView = () => {
@@ -110,7 +134,7 @@ const gotoEventMemberView = () => {
       <span>报名开始时间</span>
       <el-date-picker
           v-model="editEvent.regStartTime"
-          type="date"
+          type="datetime"
           placeholder="Pick a day"
           size="default"
       />
@@ -119,7 +143,7 @@ const gotoEventMemberView = () => {
       <span>报名结束时间</span>
       <el-date-picker
           v-model="editEvent.regEndTime"
-          type="date"
+          type="datetime"
           placeholder="Pick a day"
           size="default"
       />
@@ -128,7 +152,7 @@ const gotoEventMemberView = () => {
       <span>活动开始时间</span>
       <el-date-picker
           v-model="editEvent.startTime"
-          type="date"
+          type="datetime"
           placeholder="Pick a day"
           size="default"
       />
@@ -137,7 +161,7 @@ const gotoEventMemberView = () => {
       <span>活动结束时间</span>
       <el-date-picker
           v-model="editEvent.endTime"
-          type="date"
+          type="datetime"
           placeholder="Pick a day"
           size="default"
       />
@@ -158,9 +182,9 @@ const gotoEventMemberView = () => {
     </div>
     <div class="item">
       <span>审核方式</span>
-      <el-select v-model="value" placeholder="Select" style="width: 240px">
+      <el-select v-model="editEvent.audit" placeholder="Select" style="width: 240px">
         <el-option
-            v-for="item in statusOptions"
+            v-for="item in auditOptions"
             :key="item.value"
             :label="item.label"
             :value="item.value"
@@ -182,7 +206,7 @@ const gotoEventMemberView = () => {
     </div>
     <div class="item">
       <span>活动状态</span>
-      <el-select v-model="value" placeholder="Select" style="width: 240px">
+      <el-select v-model="editEvent.status" placeholder="Select" style="width: 240px">
         <el-option
             v-for="item in statusOptions"
             :key="item.value"
@@ -208,7 +232,7 @@ const gotoEventMemberView = () => {
 }
 
 .item {
-  width: max-content;
+  width: 200px;
   font-size: 16px;
 
   span {
@@ -220,7 +244,6 @@ const gotoEventMemberView = () => {
     }
 
     text-align-last: justify;
-    min-width: 100px;
     display: inline-block;
   }
 

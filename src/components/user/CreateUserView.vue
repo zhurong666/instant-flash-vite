@@ -16,7 +16,7 @@
       <el-col :span="11">
         <el-date-picker
             v-model="form.birthday"
-            type="date"
+            type="datetime"
             placeholder="Pick a date"
             style="width: 100%"
         />

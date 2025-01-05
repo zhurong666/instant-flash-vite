@@ -53,6 +53,18 @@ export function getEventTargetGroupTypes() {
         method: "get"
     })
 }
+
+
+export function updateEvent(editEvent: EditEvent) {
+    return request<string>({
+        url: "admin/event/" + editEvent.eventId,
+        method: "put",
+        headers: {toEventId: editEvent.eventId},
+        data: editEvent
+    })
+}
+
+
 export interface EditEvent {
     eventId: number,
     userId: number,

@@ -52,7 +52,7 @@ const uploadSuss = (res) => {
   if (res.code == 200) {
     const avatar = res.data as string;
     console.log(avatar)
-    editUser.avatar = avatar.replace("my-bucket/","")
+    editUser.avatar = avatar.replace("my-bucket/", "")
   }
 }
 
@@ -116,7 +116,7 @@ const submit = async () => {
   console.log(data)
   if (data.code == 200) {
     alert("修改成功")
-  }else {
+  } else {
     alert("修改失败")
   }
 }
@@ -173,7 +173,7 @@ const submit = async () => {
       <span>出生日期</span>
       <el-date-picker
           v-model="editUser.brithDay"
-          type="date"
+          type="datetime"
           placeholder="Pick a day"
           size="default"
       />
@@ -221,7 +221,7 @@ const submit = async () => {
 }
 
 .item {
-  width: max-content;
+  width: 200px;
   font-size: 16px;
 
   span {
@@ -271,4 +271,14 @@ const submit = async () => {
   height: 60px;
 }
 
+.avatar-uploader {
+  position: relative;
+  top: -50%;
+  left: 70%;
+
+  :deep(.el-upload--picture-card) {
+    width: 100px;
+    height: 100px;
+  }
+}
 </style>

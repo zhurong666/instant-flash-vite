@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {onMounted, reactive, ref, watch} from "vue";
+import {onMounted, ref, watch} from "vue";
 import {getEventById, getEventMemberById} from "@/api/event";
 import {useRoute} from "vue-router";
 import {baseImgURL} from "@/utils/service";
@@ -91,7 +91,7 @@ const tableData = ref([
 
       <div class="item">
         <span>审核方式</span>
-        <input type="text" disabled :value="placeholderEvent.userId">
+        <input type="text" disabled :value="placeholderEvent.userId == 1?'需审核':'无需审核'">
       </div>
     </div>
     <div class="user-info">
@@ -147,20 +147,28 @@ const tableData = ref([
       height: 220px;
     }
 
-    .item span {
-      min-width: 100px;
-      display: inline-block;
-      text-align-last: justify;
+    .item {
+      width: 200px;
 
-      &:first-child:after {
-        content: ":";
-        margin: 0 10px 0 5px;
+      span {
+        min-width: 100px;
+        display: inline-block;
+        text-align-last: justify;
+
+        &:first-child:after {
+          content: ":";
+          margin: 0 10px 0 5px;
+        }
       }
     }
   }
 
   .user-list {
     width: 40%;
+  }
+  input {
+    width: 100%;
+    padding: 5px;
   }
 }
 </style>
