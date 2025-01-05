@@ -47,7 +47,8 @@ async function commit() {
       toEventId: eventId
     },
     params: {
-      isApproved: cup2(status)
+      isApproved: cup2(status),
+      reason:msg.value
     }
   })
   if (data.code == 200) {
