@@ -25,7 +25,6 @@ function createService() {
         (response) => {
             // apiData 是 api 返回的数据
             const apiData = response.data
-            console.log("apiData", apiData)
             // 二进制数据则直接返回
             const responseType = response.request?.responseType
             if (responseType === "blob" || responseType === "arraybuffer") return apiData
@@ -45,7 +44,8 @@ function createService() {
                     return logout()
                 default:
                     // 不是正确的 code
-                    ElMessage.error(apiData.message || "Error")
+                    console.log("apiData.msg:", apiData.msg)
+                    ElMessage.error(apiData.msg || "Error")
                     return Promise.reject(new Error("Error"))
             }
         },

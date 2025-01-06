@@ -5,7 +5,7 @@ import {request} from "@/utils/service.ts";
 
 const handleClick = (index) => {
   router.push({
-    path: `/user/detail/${1}`,
+    path: `/active/detail/${index}`,
   })
 }
 
@@ -39,7 +39,7 @@ async function commit() {
       toEventId: eventId
     },
     params: {
-      isApproved,
+      isApproved:that.isApproved,
       reason:msg.value
     }
   })
@@ -50,7 +50,6 @@ async function commit() {
 }
 const that = getCurrentInstance()
 let index = 0
-let isApproved = false
 const showCommitM = (index: number, isApproved: boolean) => {
   that.index = index
   that.isApproved = isApproved
@@ -87,7 +86,7 @@ const msg = ref('')
       <el-table-column fixed="right" label="操作" min-width="120">
         <template #default="scope">
           <el-button link type="primary" size="small"
-                     @click="handleClick(scope.$index)">详情
+                     @click="handleClick(scope.row.id)">详情
           </el-button>
           <el-button link type="primary" size="small" @click="showCommitM(scope.$index,true)">通过</el-button>
           <el-button link type="primary" size="small" @click="showCommitM(scope.$index,false)">打回</el-button>

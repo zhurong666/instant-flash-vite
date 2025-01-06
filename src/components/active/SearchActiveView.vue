@@ -28,7 +28,7 @@ const tableData = reactive([])
 
 const handleClick = (index) => {
   router.push({
-    path: `/active/detail/${tableData.at(index).id}`,
+    path: `/active/detail/${index}`,
   })
 }
 const edit = (index) => {
@@ -153,7 +153,7 @@ onMounted(async () => {
       <el-table-column fixed="right" label="操作" min-width="120">
         <template #default="scope">
           <el-button link type="primary" size="small"
-                     @click="handleClick(scope.$index)">详情
+                     @click="handleClick(scope.row.id)">详情
           </el-button>
           <el-button link type="primary" size="small" @click="edit(scope.$index)">修改</el-button>
           <el-button link type="primary" size="small" @click="showCommitM(scope.$index)">{{ cup(scope.row.status) }}
