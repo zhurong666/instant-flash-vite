@@ -26,6 +26,9 @@ const loadData = async (pageNum = 1, pageSize = 10) => {
       pageSize,
     }
   })
+  data.data.forEach(item => {
+    item.address = item.address ?? "成都"
+  })
   tableData.splice(0)
   tableData.push(...data.data)
 }
@@ -39,8 +42,8 @@ async function commit() {
       toEventId: eventId
     },
     params: {
-      isApproved:that.isApproved,
-      reason:msg.value
+      isApproved: that.isApproved,
+      reason: msg.value
     }
   })
   if (data.code == 200) {
@@ -48,6 +51,7 @@ async function commit() {
   }
   showCommit.value = false
 }
+
 const that = getCurrentInstance()
 let index = 0
 const showCommitM = (index: number, isApproved: boolean) => {
@@ -152,7 +156,7 @@ const msg = ref('')
       width="500"
       center
   >
-    <el-form-item label="用户名称：">
+    <el-form-item label="记录日志：">
       <el-input v-model="msg"/>
     </el-form-item>
     <template #footer>

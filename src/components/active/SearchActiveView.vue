@@ -199,7 +199,7 @@ onMounted(async () => {
       width="500"
       center
   >
-    <el-form-item label="用户名称：">
+    <el-form-item label="记录日志：">
       <el-input v-model="msg"/>
     </el-form-item>
     <template #footer>

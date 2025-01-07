@@ -31,18 +31,28 @@ const uploadObj1 = reactive([
 const uploadObj2 = reactive([
   {
     id: 1,
+    eventId:"",
     title: "",
     aboutUrl: "",
     imgUrl: ""
   },
   {
     id: 2,
+    eventId:"",
     title: "",
     aboutUrl: "",
     imgUrl: ""
   },
   {
     id: 3,
+    eventId:"",
+    title: "",
+    aboutUrl: "",
+    imgUrl: ""
+  },
+  {
+    id: 4,
+    eventId:"",
     title: "",
     aboutUrl: "",
     imgUrl: ""
@@ -203,6 +213,16 @@ const submit2 = async () => {
         />
       </div>
 
+      <div class="item">
+        <el-text class="label">关联活动Id</el-text>
+        <el-input
+            v-model="uploadObj2[0].eventId"
+            style="width: 240px"
+            placeholder="请输入关联活动Id"
+            clearable
+        />
+      </div>
+
       <el-text class="title">第二个</el-text>
       <div class="item">
         <el-text class="label">关 联 链 接</el-text>
@@ -220,6 +240,16 @@ const submit2 = async () => {
             v-model="uploadObj2[1].title"
             style="width: 240px"
             placeholder="请输入描述"
+            clearable
+        />
+      </div>
+
+      <div class="item">
+        <el-text class="label">关联活动Id</el-text>
+        <el-input
+            v-model="uploadObj2[1].eventId"
+            style="width: 240px"
+            placeholder="请输入关联活动Id"
             clearable
         />
       </div>
@@ -245,6 +275,45 @@ const submit2 = async () => {
         />
       </div>
 
+      <div class="item">
+        <el-text class="label">关联活动Id</el-text>
+        <el-input
+            v-model="uploadObj2[2].eventId"
+            style="width: 240px"
+            placeholder="请输入关联活动Id"
+            clearable
+        />
+      </div>
+      <el-text class="title">第四个</el-text>
+      <div class="item">
+        <el-text class="label">关 联 链 接</el-text>
+        <el-input
+            v-model="uploadObj2[3].aboutUrl"
+            style="width: 240px"
+            placeholder="请输入链接"
+            clearable
+        />
+      </div>
+
+      <div class="item">
+        <el-text class="label">简 单 描 述</el-text>
+        <el-input
+            v-model="uploadObj2[3].title"
+            style="width: 240px"
+            placeholder="请输入描述"
+            clearable
+        />
+      </div>
+
+      <div class="item">
+        <el-text class="label">关联活动Id</el-text>
+        <el-input
+            v-model="uploadObj2[3].eventId"
+            style="width: 240px"
+            placeholder="请输入关联活动Id"
+            clearable
+        />
+      </div>
       <div style="width: 100%">
         <el-button type="primary" @click="submit3">提交</el-button>
       </div>
@@ -260,7 +329,7 @@ const submit2 = async () => {
         />
       </div>
       <div style="width: 100%">
-        <el-button @click="submit2" type="primary">提交</el-button>
+        <el-button @click="submit2" type="primary" style="margin-top: 30px">提交</el-button>
       </div>
     </div>
   </div>
