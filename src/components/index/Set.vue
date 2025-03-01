@@ -8,56 +8,28 @@ import {baseURL, request} from "@/utils/service.ts";
 const fileList = ref<UploadUserFile[]>([])
 const fileList2 = ref<UploadUserFile[]>([])
 
-const uploadObj1 = reactive([
-  {
-    id: 1,
+const t1 = []
+for (let i = 0; i < 4; i++) {
+  t1.push({
+    id: i + 1,
     title: "",
     aboutUrl: "",
     imgUrl: ""
-  },
-  {
-    id: 2,
+  })
+}
+const uploadObj1 = reactive(t1)
+
+const t = []
+for (let i = 0; i < 4; i++) {
+  t.push({
+    id: i + 1,
+    eventId: "",
     title: "",
     aboutUrl: "",
     imgUrl: ""
-  },
-  {
-    id: 3,
-    title: "",
-    aboutUrl: "",
-    imgUrl: ""
-  },
-])
-const uploadObj2 = reactive([
-  {
-    id: 1,
-    eventId:"",
-    title: "",
-    aboutUrl: "",
-    imgUrl: ""
-  },
-  {
-    id: 2,
-    eventId:"",
-    title: "",
-    aboutUrl: "",
-    imgUrl: ""
-  },
-  {
-    id: 3,
-    eventId:"",
-    title: "",
-    aboutUrl: "",
-    imgUrl: ""
-  },
-  {
-    id: 4,
-    eventId:"",
-    title: "",
-    aboutUrl: "",
-    imgUrl: ""
-  },
-])
+  })
+}
+const uploadObj2 = reactive(t)
 const uploadSuss = (res) => {
   console.log(res)
   if (res.code == 200) {
@@ -80,13 +52,6 @@ const submit = () => {
     data: uploadObj1
   })
 }
-const submit3 = () => {
-  request<String>({
-    url: "index/district",
-    method: "post",
-    data: uploadObj2
-  })
-}
 
 const submit2 = async () => {
   const {data} = await request<object>({
@@ -95,11 +60,23 @@ const submit2 = async () => {
   })
   console.log(data)
 }
+
+const submit3 = () => {
+  request<String>({
+    url: "index/district",
+    method: "post",
+    data: uploadObj2
+  })
+}
+
 </script>
 
 <template>
-  <div style="display: flex">
-    <div style="width: 48%;border-right: 1px solid #292929;margin-right: 30px">
+  <div class="app-container">
+    <div class="guanggao" style="border-right: 1px solid #292929;margin-right: 30px">
+      <span style="width: 100%;text-align: center;display: inline-block;margin: 10px">
+        广告设置
+      </span>
       <el-upload
           v-model:file-list="fileList"
           :action="baseURL+'common/upload'"
@@ -175,11 +152,14 @@ const submit2 = async () => {
         />
       </div>
 
-      <div style="width: 100%">
+      <div style="width: 100%;text-align: center;margin-top: 10px">
         <el-button type="primary" @click="submit">提交</el-button>
       </div>
     </div>
-    <div style="width: 48%;border-right: 1px solid #292929;margin-right: 30px">
+    <div class="tuijian" style="border-right: 1px solid #292929;margin-right: 30px">
+      <span style="width: 100%;text-align: center;display: inline-block;margin: 10px">
+        推荐设置
+      </span>
       <el-upload
           v-model:file-list="fileList2"
           :action="baseURL+'common/upload'"
@@ -314,13 +294,17 @@ const submit2 = async () => {
             clearable
         />
       </div>
-      <div style="width: 100%">
+      <div style="width: 100%;text-align: center;margin-top: 10px">
+
         <el-button type="primary" @click="submit3">提交</el-button>
       </div>
     </div>
     <div>
       <div class="item">
-        <el-text class="label">公告</el-text>
+        <span style="width: 100%;text-align: center;display: inline-block;margin: 10px">
+          推荐设置
+        </span>
+        <el-text class="label">公告内容</el-text>
         <el-input
             v-model="input"
             style="width: 240px"
@@ -328,8 +312,8 @@ const submit2 = async () => {
             clearable
         />
       </div>
-      <div style="width: 100%">
-        <el-button @click="submit2" type="primary" style="margin-top: 30px">提交</el-button>
+      <div style="width: 100%;text-align: center;margin-top: 20px">
+        <el-button @click="submit2" type="primary" style="margin-top: 30px;">提交</el-button>
       </div>
     </div>
   </div>
@@ -340,6 +324,19 @@ const submit2 = async () => {
 .title {
   font-size: 22px;
   font-weight: bold;
+}
+
+.app-container {
+  display: flex;
+  justify-content: space-around;
+  padding: 5px 20px;
+
+  .tuijian, .guanggao {
+    max-height: calc(100vh - 220px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 400px;
+  }
 }
 
 .item {

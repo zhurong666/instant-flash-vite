@@ -11,7 +11,7 @@ const routes: RouteRecordRaw[] = [
     {
         path: '/',
         name: 'Home',
-        redirect: "/user/search",
+        // redirect: "/user/search",
         meta: {menuId: '1-1'},
         component: () => import("../components/HomeView.vue")
     },
