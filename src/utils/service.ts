@@ -109,7 +109,8 @@ function createRequest(service: AxiosInstance) {
             },
             timeout: 5000,
             baseURL: import.meta.env.VITE_BASE_API,
-            data: {}
+            data: {},
+            method:HttpMethod.GET
         }
         // 将默认配置 defaultConfig 和传入的自定义配置 config 进行合并成为 mergeConfig
         const mergeConfig = merge(defaultConfig, config)
@@ -119,7 +120,17 @@ function createRequest(service: AxiosInstance) {
 
 /** 用于网络请求的实例 */
 const service = createService()
+
+
+
+
 /** 用于网络请求的方法 */
 export const request = createRequest(service)
 export const baseURL = import.meta.env.VITE_BASE_API
 export const baseImgURL = "http://192.168.1.121:9000/"
+export enum HttpMethod {
+    GET = "GET",
+    POST = "POST",
+    PUT = "PUT",
+    DELETE = "DELETE"
+}

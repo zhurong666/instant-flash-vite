@@ -1,4 +1,4 @@
-import {request} from "../../utils/service.ts";
+import {HttpMethod, request} from "../../utils/service.ts";
 import {UserInfo} from "./types";
 
 /** 获取用户详情 */
@@ -57,3 +57,10 @@ export function updateUserStatus(userInfo: { userId: number, status: number }) {
     })
 }
 
+
+export function getUserByAdminCityId() {
+    return request<string>({
+        url: "/admin/user/adminCityId",
+        method: HttpMethod.GET
+    })
+}

@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import {reactive, ref} from "vue";
+import {onMounted, reactive, ref} from "vue";
 import {Search} from '@element-plus/icons-vue'
 import router from "@/router";
 import {searchApi} from "@/api/event";
 import {SearchResponseData} from "@/api/login/types/search.ts";
-import {updateUserStatus} from "@/api/user";
+import {getUserByAdminCityId, updateUserStatus} from "@/api/user";
 import {tLog} from "@/utils/tip";
+import {useUserStore} from "@/store/modules/user";
 
 const inputTxt = ref("")
 
@@ -77,6 +78,20 @@ const searchEnter = async (text) => {
     tableData.push(data)
   }
 }
+const userStore = useUserStore()
+onMounted(()=>{
+  getUserByAdminCityId().then(resp=>{
+    if (resp.code == 200) {
+      tableData.splice(0)
+      const user = userStore.getCacheUserInfo()
+      const data = resp.data.filter(item=>{
+        return item.id !== user.id //忽略自己
+      })
+      console.log(data)
+      tableData.push(...data)
+    }
+  })
+})
 
 </script>
 

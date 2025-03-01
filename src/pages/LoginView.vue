@@ -4,8 +4,8 @@ import {FormInstance, FormRules} from "element-plus";
 import {reactive, ref} from "vue";
 import {Key, Loading, Lock, Picture, User} from "@element-plus/icons-vue"
 // type 加与不加区别？
-import {LoginRequestData} from "../api/login/types/login.ts";
-import {useUserStore} from "../store/modules/user.ts";
+import {LoginRequestData} from "@/api/login/types/login";
+import {useUserStore} from "@/store/modules/user";
 import {getLoginCodeApi} from "@/api/login";
 
 const baseUri = import.meta.env.VITE_BASE_API

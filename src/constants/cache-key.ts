@@ -14,6 +14,9 @@ class CacheKey {
   static readonly EVENT_TYPE = `${SYSTEM_NAME}-event-type`
   static readonly EVENT_STATUS = `${SYSTEM_NAME}-event-status`
   static readonly EVENT_TARGET_GROUP_TYPE = `${SYSTEM_NAME}-event-target-group-type`
+
+
+  static readonly USER_INFO = `${SYSTEM_NAME}-user-info-key`
 }
 
 export default CacheKey

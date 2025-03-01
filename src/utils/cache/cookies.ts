@@ -14,3 +14,16 @@ export const setToken = (token: string) => {
 export const removeToken = () => {
     Cookies.remove(CacheKey.TOKEN)
 }
+
+export const setUserInfo = (userInfo: object) => {
+    const expirationTime = new Date();
+    expirationTime.setMonth(expirationTime.getMonth() + 1);
+    Cookies.set(CacheKey.USER_INFO, JSON.stringify(userInfo), {expires: expirationTime})
+}
+export const getUserInfo = () => {
+    const userinfo = Cookies.get(CacheKey.USER_INFO)
+    return JSON.parse(userinfo || {})
+}
+export const removeUserInfo = () => {
+    Cookies.remove(CacheKey.USER_INFO)
+}
