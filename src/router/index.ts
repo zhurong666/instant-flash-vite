@@ -12,30 +12,30 @@ const routes: RouteRecordRaw[] = [
         path: '/',
         name: 'Home',
         redirect: "/user/search",
-        meta: { menuId: '1-1' },
+        meta: {menuId: '1-1'},
         component: () => import("../components/HomeView.vue")
     },
     {
         path: '/login',
         name: 'Login',
-        meta: { menuId: '10-1' },
+        meta: {menuId: '10-1'},
         component: () => import("../pages/LoginView.vue")
     },
     {
         path: '/about',
         name: 'About',
-        meta: { menuId: '1-1' },
+        meta: {menuId: '1-1'},
         component: () => import("../pages/AboutView.vue")
     },
     {
         path: '/index',
         name: 'Index',
         component: layout,
-        children:[
+        children: [
             {
                 path: 'set',
                 name: 'Set',
-                meta: { menuId: '1-2' },
+                meta: {menuId: '1-2'},
                 component: () => import("../components/index/Set.vue")
             },
         ]
@@ -48,25 +48,25 @@ const routes: RouteRecordRaw[] = [
             {
                 path: 'create',
                 name: 'UserCreate',
-                meta: { menuId: '2-1' },
+                meta: {menuId: '2-1'},
                 component: () => import("../components/user/CreateUserView.vue")
             },
             {
                 path: 'search',
                 name: 'UserSearch',
-                meta: { menuId: '2-2' },
+                meta: {menuId: '2-2'},
                 component: () => import("../components/user/SearchUserView.vue")
             },
             {
                 path: 'detail/:id',
                 name: 'UserDetail',
-                meta: { menuId: '2-3' },
+                meta: {menuId: '2-3'},
                 component: () => import("../components/user/UserDetailsView.vue")
             },
             {
                 path: 'edit/:id',
                 name: 'UserEdit',
-                meta: { menuId: '2-4' },
+                meta: {menuId: '2-4'},
                 component: () => import("../components/user/EditUserView.vue")
             },
         ],
@@ -79,31 +79,31 @@ const routes: RouteRecordRaw[] = [
             {
                 path: 'check',
                 name: 'ActiveCheck',
-                meta: { menuId: '3-1' },
+                meta: {menuId: '3-1'},
                 component: () => import("../components/active/CheckActiveView.vue")
-            },
-            {
-                path: 'edit/:id',
-                name: 'ActiveEdit',
-                meta: { menuId: '3-2' },
-                component: () => import("../components/active/EditActiveView.vue")
             },
             {
                 path: 'search',
                 name: 'ActiveSearch',
-                meta: { menuId: '3-3' },
+                meta: {menuId: '3-2'},
                 component: () => import("../components/active/SearchActiveView.vue")
+            },
+            {
+                path: 'edit/:id',
+                name: 'ActiveEdit',
+                meta: {menuId: '3-3'},
+                component: () => import("../components/active/EditActiveView.vue")
             },
             {
                 path: 'detail/:id',
                 name: 'ActiveDetail',
-                meta: { menuId: '3-4' },
+                meta: {menuId: '3-4'},
                 component: () => import("../components/active/ActiveDetailsView.vue")
             },
             {
                 path: 'checkMemberActive/:id',
                 name: 'CheckMemberActive',
-                meta: { menuId: '3-5' },
+                meta: {menuId: '3-5'},
                 component: () => import("../components/active/CheckMemberActiveView.vue")
             },
         ],

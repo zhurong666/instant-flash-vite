@@ -65,6 +65,17 @@ export function updateEvent(editEvent: EditEvent) {
 }
 
 
+export function getCityByAdminRole(pageSize = 10, pageNum = 1) {
+    return request({
+        url: "admin/event/getCityByAdminRole",
+        params: {
+            pageSize,
+            pageNum
+        }
+    })
+}
+
+
 export interface EditEvent {
     eventId: number,
     userId: number,

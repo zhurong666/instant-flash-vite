@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import {computed, getCurrentInstance, onMounted, reactive, ref} from "vue";
 import {Search} from '@element-plus/icons-vue'
-import {denyEvent, searchApi} from "@/api/event";
+import {getCityByAdminRole, searchApi} from "@/api/event";
 import router from "@/router";
 import {request} from "@/utils/service";
-import {b} from "vite/dist/node/types.d-aGj9QkWt";
 
 const that = getCurrentInstance()
 const searchType = ref(1)
@@ -48,7 +47,7 @@ async function commit() {
     },
     params: {
       isApproved: cup2(status),
-      reason:msg.value
+      reason: msg.value
     }
   })
   if (data.code == 200) {
@@ -56,6 +55,7 @@ async function commit() {
   }
   showCommit.value = false
 }
+
 let index = 0
 const showCommitM = (index: number) => {
   that.index = index
@@ -98,8 +98,11 @@ function cup2(stauts: number): boolean {
 }
 
 onMounted(async () => {
-  // const {data} = await getCityByLatLng( 30.0,104.0)
-  // console.log(data)
+  getCityByAdminRole().then(res => {
+    console.log(res)
+  }).catch(err => {
+    console.log(err)
+  })
 })
 </script>
 
