@@ -6,6 +6,7 @@ import type {UploadUserFile} from "element-plus";
 import {getCity} from "@/api";
 import {useRoute} from "vue-router";
 import {getUserInfoApi, getUserTypes, updateUserInfo} from "@/api/user";
+import {getUserStatusCache} from "@/utils/cache/common";
 
 const {params} = useRoute();
 
@@ -78,9 +79,14 @@ const handleSelect = (item: RestaurantItem) => {
   editUser.cityId = item.id
 }
 
-const cpuIdentity = computed(()=>{
-  return userTypes.value.find(item=>item.id == placeholderUser.value.identityId)?.name || "未设置"
+const cpuIdentity = computed(() => {
+  return userTypes.value.find(item => item.id == placeholderUser.value.identityId)?.name || "未设置"
 })
+
+const cpuStatus = computed(() => {
+  return userStatus.value.find(item => item.code == placeholderUser.value.statusId)?.description
+})
+const userStatus = ref(<any[]>[])
 
 onMounted(() => {
   getData()
@@ -107,10 +113,11 @@ const getData = async () => {
   try {
     const cityId = placeholderUser.value.cityId
     state.value = restaurants.value.filter(item => item.id == cityId)[0]?.extName
-
   } catch (err) {
     console.log(err)
   }
+  const userStatusCache = getUserStatusCache()
+  userStatus.value = userStatusCache || []
 }
 
 const submit = async () => {
@@ -168,7 +175,7 @@ const submit = async () => {
     <div class="item">
       <span>性别</span>
       <input class="edit-input" type="text" name="gender"
-             :placeholder="placeholderUser.gender"
+             :placeholder="placeholderUser.gender == 1 ? '男' : '女'"
              v-model="editUser.gender">
     </div>
     <div class="item">
@@ -219,7 +226,7 @@ const submit = async () => {
     </div>
     <div class="item">
       <span>状态</span>
-      <el-select v-model="value" placeholder="Select" style="width: 240px">
+      <el-select v-model="value" :placeholder="cpuStatus" style="width: 240px">
         <el-option
             v-for="item in statusOptions"
             :key="item.value"

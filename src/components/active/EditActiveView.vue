@@ -172,7 +172,7 @@ const gotoEventMemberView = () => {
              :placeholder="placeholderEvent.currentParticipant"
              disabled
              v-model="editEvent.currentParticipant">
-      <el-button @click="gotoEventMemberView">审查</el-button>
+      <el-button @click="gotoEventMemberView" type="info">查看</el-button>
     </div>
     <div class="item">
       <span>最多人数</span>

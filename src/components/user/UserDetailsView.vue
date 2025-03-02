@@ -1,13 +1,16 @@
 <script setup lang="ts">
-import {computed, onMounted, reactive, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import type {UserInfo} from "@/api/user/types";
-import {getUserInfoApi} from "@/api/user";
+import {getUserInfoApi, getUserTypes} from "@/api/user";
 import {useRoute} from "vue-router";
-import {baseImgURL, baseURL} from "@/utils/service.ts";
+import {baseImgURL} from "@/utils/service.ts";
+import {getCity} from "@/api";
+import {getUserStatusCache} from "@/utils/cache/common";
 
-const {query, params} = useRoute();
+const {params} = useRoute();
 const userInfo = ref<UserInfo>({})
 
+const userTypes = ref(<any[]>[])
 onMounted(() => {
   loadData()
 })
@@ -15,11 +18,26 @@ onMounted(() => {
 async function loadData() {
   const {data} = await getUserInfoApi(params.id)
   userInfo.value = data
+
+  const adata = await getUserTypes()
+  userTypes.value = adata.data
+
+  const ata = await getCity()
+  const city = Object.values(ata.data).find(item=>item.id === userInfo.value.cityId)
+  userInfo.value.cityName = city.extName
+
+  const userStatusCache = getUserStatusCache()
+  userStatus.value = userStatusCache || []
 }
 
 
 const location = computed(() => {
-  return ""
+  return "xxx"
+})
+
+const userStatus = ref(<any[]>[])
+const cpuStatus = computed(() => {
+  return userStatus.value.find(item => item.code == userInfo.value.statusId)?.description
 })
 </script>
 
@@ -44,7 +62,7 @@ const location = computed(() => {
       </div>
       <div class="item">
         <span>性别</span>
-        <input type="text" disabled :value="userInfo?.gender">
+        <input type="text" disabled :value="userInfo.gender == 1 ? '男' : '女'">
       </div>
     </div>
     <div class="user-info">
@@ -54,17 +72,17 @@ const location = computed(() => {
       </div>
       <div class="item">
         <span>积分</span>
-        <input type="text" disabled :value="userInfo?.integral">
+        <input type="text" disabled value="不可见">
       </div>
       <div class="item">
         <span>状态</span>
-        <input type="text" disabled :value="userInfo?.statusId">
+        <input type="text" disabled :value="cpuStatus">
       </div>
     </div>
     <div class="user-info">
       <div class="item">
         <span>账号所属地</span>
-        <input type="text" disabled :value="userInfo?.cityId">
+        <input type="text" disabled :value="userInfo?.cityName">
       </div>
       <div class="item">
         <span>最后上线所在地</span>
