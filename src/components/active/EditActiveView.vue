@@ -236,7 +236,7 @@ const cpuEventGroup = computed(()=>{
     </div>
     <div class="item">
       <span>活动状态</span>
-      <el-select v-model="editEvent.status" placeholder="Select" style="width: 240px">
+      <el-select v-model="editEvent.status" placeholder="状态" style="width: 240px">
         <el-option
             v-for="item in statusOptions"
             :key="item.value"

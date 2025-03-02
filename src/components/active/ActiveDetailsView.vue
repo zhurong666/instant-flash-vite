@@ -1,13 +1,24 @@
 <script setup lang="ts">
-import {onMounted, ref, watch} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import {getEventById, getEventMemberById} from "@/api/event";
 import {useRoute} from "vue-router";
 import {baseImgURL} from "@/utils/service";
+import {getEventTargetGroupTypesCache, getEventTypesCache} from "@/utils/cache/common";
+import * as CommonCache from "@/utils/cache/common";
 
 const {params} = useRoute()
 const placeholderEvent = ref({})
+const statusOptions = ref([])
 onMounted(() => {
   loadData()
+
+  const eventStatus: [] = CommonCache.getEventStatusCache()
+  statusOptions.value = eventStatus.map(item => {
+    return {
+      value: item.code,
+      label: item.statusText
+    }
+  })
 })
 const loadData = async () => {
   const data = await getEventById(params.id)
@@ -37,6 +48,22 @@ const tableData = ref([
   }
 ])
 
+const eventTypes = getEventTypesCache()
+const eventGroups = getEventTargetGroupTypesCache()
+const cpuEventType = computed(()=>{
+  return Object.values(eventTypes).find((item,index) => {
+    return index === placeholderEvent.value.category
+  })
+})
+const cpuEventGroup = computed(()=>{
+  return Object.values(eventGroups).find((item,index) => index === placeholderEvent.value.targetGroupId)
+})
+
+const cpuStatus = computed(()=>{
+  return statusOptions.value.find((item) => {
+    return item.value === placeholderEvent.value.status
+  })?.label || "xx"
+})
 </script>
 
 <template>
@@ -60,11 +87,11 @@ const tableData = ref([
       </div>
       <div class="item">
         <span>活动类型</span>
-        <input type="text" disabled :value="placeholderEvent.category">
+        <input type="text" disabled :value="cpuEventType">
       </div>
       <div class="item">
         <span>目标用户群体</span>
-        <input type="text" disabled :value="placeholderEvent.targetGroupId">
+        <input type="text" disabled :value="cpuEventGroup">
       </div>
     </div>
     <div class="user-info">
@@ -114,7 +141,7 @@ const tableData = ref([
       </div>
       <div class="item">
         <span>活动状态</span>
-        <input type="text" disabled :value="placeholderEvent.statusId">
+        <input type="text" disabled :value="cpuStatus">
       </div>
     </div>
     <div class="user-list">
