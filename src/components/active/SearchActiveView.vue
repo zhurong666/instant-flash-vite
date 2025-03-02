@@ -98,8 +98,12 @@ function cup2(stauts: number): boolean {
 }
 
 onMounted(async () => {
-  getCityByAdminRole().then(res => {
-    console.log(res)
+  getCityByAdminRole().then(resp => {
+    if (resp.code == 200) {
+      tableData.splice(0)
+      const data = resp.data
+      tableData.push(...data)
+    }
   }).catch(err => {
     console.log(err)
   })
