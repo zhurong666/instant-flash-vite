@@ -1,10 +1,11 @@
 <script setup lang="ts">
 
-import {onMounted, reactive, ref, watch} from "vue";
+import {computed, onMounted, reactive, ref, watch} from "vue";
 import {EditEvent, getEventById, updateEvent} from "@/api/event";
 import {useRoute} from "vue-router";
 import router from "@/router";
 import * as CommonCache from "@/utils/cache/common";
+import {getEventTargetGroupTypesCache, getEventTypesCache} from "@/utils/cache/common";
 
 const {params} = useRoute()
 
@@ -74,6 +75,14 @@ const removeUnchangedValues = (editEvent, placeholderEvent) => {
     }
   });
 
+
+  // Date
+  Object.keys(result).forEach(key => {
+    if (result[key] instanceof Date) {
+      result[key] = result[key].getTime();
+    }
+  });
+
   return result;
 };
 
@@ -93,6 +102,17 @@ const gotoEventMemberView = () => {
     path: "/active/checkMemberActive/" + params.id
   })
 }
+
+const eventTypes = getEventTypesCache()
+const eventGroups = getEventTargetGroupTypesCache()
+const cpuEventType = computed(()=>{
+  return Object.values(eventTypes).find((item,index) => {
+    return index === placeholderEvent.value.category
+  })
+})
+const cpuEventGroup = computed(()=>{
+  return Object.values(eventGroups).find((item,index) => index === placeholderEvent.value.targetGroupId)
+})
 </script>
 
 <template>
@@ -120,15 +140,25 @@ const gotoEventMemberView = () => {
     </div>
     <div class="item">
       <span>活动类型</span>
-      <input class="edit-input" type="text" name="category"
-             :placeholder="placeholderEvent.category"
-             v-model="editEvent.category">
+      <el-select v-model="editEvent.category" :placeholder="cpuEventType" style="width: 240px">
+        <el-option
+            v-for="(item,index) of Object.values(eventTypes)"
+            :key="index"
+            :label="item"
+            :value="index"
+        />
+      </el-select>
     </div>
     <div class="item">
       <span>目标用户群体</span>
-      <input class="edit-input" type="text" name="targetGroupId"
-             :placeholder="placeholderEvent.targetGroupId"
-             v-model="editEvent.targetGroupId">
+      <el-select v-model="editEvent.targetGroupId" :placeholder="cpuEventGroup" style="width: 240px">
+        <el-option
+            v-for="(item,index) of Object.values(eventGroups)"
+            :key="index"
+            :label="item"
+            :value="index"
+        />
+      </el-select>
     </div>
     <div class="item">
       <span>报名开始时间</span>
