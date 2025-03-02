@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import {onMounted, reactive, ref} from "vue";
+import {computed, onMounted, reactive, ref} from "vue";
 import {baseImgURL, baseURL} from "@/utils/service.ts";
 import {Plus} from "@element-plus/icons-vue";
 import type {UploadUserFile} from "element-plus";
 import {getCity} from "@/api";
 import {useRoute} from "vue-router";
-import {getUserInfoApi, updateUserInfo} from "@/api/user";
+import {getUserInfoApi, getUserTypes, updateUserInfo} from "@/api/user";
 
 const {params} = useRoute();
 
@@ -20,7 +20,7 @@ const editUser = reactive({
   gender: "",
   cityId: "",
   identityId: "",
-  brithDay: "",
+  birthDay: new Date(),
   avatar: "",
   statusId: "",
 })
@@ -35,10 +35,12 @@ const placeholderUser = ref({
   location: "",
   cityId: "",
   identityId: "",
-  brithDay: "",
+  birthDay: new Date(),
   avatar: "",
   statusId: "",
 })
+
+const userTypes = ref(<any[]>[])
 const fileList = ref<UploadUserFile[]>([])
 const statusOptions = [
   {
@@ -69,12 +71,16 @@ const querySearch = (queryString: string, cb: any) => {
       ? restaurants.value.filter(createFilter(queryString))
       : restaurants.value
   // call callback function to return suggestions
-  console.log("results:", results)
+  console.log("resultsLength:", results.length)
   cb(results)
 }
 const handleSelect = (item: RestaurantItem) => {
-  console.log(item)
+  editUser.cityId = item.id
 }
+
+const cpuIdentity = computed(()=>{
+  return userTypes.value.find(item=>item.id == placeholderUser.value.identityId)?.name || "未设置"
+})
 
 onMounted(() => {
   getData()
@@ -89,17 +95,30 @@ const getData = async () => {
       value1["value"] = value1["extName"]
     }
     restaurants.value.push(...values)
+
   }
   const userData = await getUserInfoApi(editUser.userId)
   placeholderUser.value = userData.data
-  console.log(userData.data)
-  editUser.brithDay = userData.data.birthDay
+  editUser.birthDay = userData.data.birthDay
+  placeholderUser.value.birthDay = userData.data.birthDay
+
+  const adata = await getUserTypes()
+  userTypes.value = adata.data
+  try {
+    const cityId = placeholderUser.value.cityId
+    state.value = restaurants.value.filter(item => item.id == cityId)[0]?.extName
+
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 const submit = async () => {
+  let birthDay = editUser.birthDay == placeholderUser.value.birthDay ? null : editUser.birthDay
+  birthDay = birthDay?.getTime()
   let o = {
     ...editUser,
-    brithDay: editUser.brithDay == placeholderUser.value.birthDay ? null : editUser.brithDay,
+    birthDay
   }
   let temp = Object.keys(o)
 
@@ -165,16 +184,21 @@ const submit = async () => {
     </div>
     <div class="item">
       <span>社会身份</span>
-      <input class="edit-input" type="text" name="identityId"
-             :placeholder="placeholderUser.identityId"
-             v-model="editUser.identityId">
+      <el-select v-model="editUser.identityId" :placeholder="cpuIdentity" style="width: 240px">
+        <el-option
+            v-for="item in userTypes"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
+        />
+      </el-select>
     </div>
     <div class="item">
       <span>出生日期</span>
       <el-date-picker
-          v-model="editUser.brithDay"
-          type="datetime"
-          placeholder="Pick a day"
+          v-model="editUser.birthDay"
+          type="date"
+          placeholder="选择出生日期"
           size="default"
       />
     </div>
@@ -240,8 +264,10 @@ const submit = async () => {
     width: 160px;
   }
 
-  .el-upload--picture-card {
+  :deep(.el-upload--picture-card) {
     --el-upload-picture-card-size: 14px;
+    width: 60px !important;
+    height: 60px !important;
   }
 }
 

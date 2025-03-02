@@ -31,7 +31,7 @@ export function denyUser(userId: number) {
 /** 获取用户详情 */
 export function getUserTypes() {
     return request<string>({
-        url: "common/getCityList",
+        url: "common/userTypes",
         method: "get"
     })
 }
