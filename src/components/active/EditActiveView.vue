@@ -95,6 +95,11 @@ const submit = async () => {
   console.log(temp)
   const data = await updateEvent(temp)
   console.log(data)
+  if (data.code === 200) {
+    alert("修改成功")
+  }else {
+    alert("修改失败")
+  }
 }
 
 const gotoEventMemberView = () => {
