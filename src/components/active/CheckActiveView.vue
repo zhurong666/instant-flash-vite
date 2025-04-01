@@ -61,6 +61,10 @@ const showCommitM = (index: number, isApproved: boolean) => {
 }
 const showCommit = ref(false)
 const msg = ref('')
+
+const paginationChange = (pageNum: number, pageSize: number) => {
+  loadData(pageNum, pageSize)
+}
 </script>
 
 <template>
@@ -104,6 +108,7 @@ const msg = ref('')
         :pager-count="7"
         layout="prev, pager, next"
         :total="100"
+        @change="paginationChange"
     />
   </div>
 
