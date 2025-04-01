@@ -27,7 +27,7 @@ const loadData = async (pageNum = 1, pageSize = 10) => {
     }
   })
   data.data.forEach(item => {
-    item.address = item.address ?? "成都"
+    item.address = item.address ? JSON.parse(item.address).ext_path : ""
   })
   tableData.splice(0)
   tableData.push(...data.data)

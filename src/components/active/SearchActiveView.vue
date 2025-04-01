@@ -102,12 +102,30 @@ onMounted(async () => {
     if (resp.code == 200) {
       tableData.splice(0)
       const data = resp.data
+      data.forEach(item => {
+        item.address = item.address ? JSON.parse(item.address).ext_path : ""
+      })
       tableData.push(...data)
     }
   }).catch(err => {
     console.log(err)
   })
 })
+
+const paginationChange = (pageNum: number, pageSize: number) => {
+  getCityByAdminRole(pageSize, pageNum).then(resp => {
+    if (resp.code == 200) {
+      tableData.splice(0)
+      const data = resp.data
+      data.forEach(item => {
+        item.address = item.address ? JSON.parse(item.address).ext_path : ""
+      })
+      tableData.push(...data)
+    }
+  }).catch(err => {
+    console.log(err)
+  })
+}
 </script>
 
 <template>
@@ -175,6 +193,7 @@ onMounted(async () => {
         :pager-count="7"
         layout="prev, pager, next"
         :total="100"
+        @change="paginationChange"
     />
   </div>
   <el-dialog
