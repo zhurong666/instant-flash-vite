@@ -23,7 +23,7 @@ async function loadData() {
   userTypes.value = adata.data
 
   const ata = await getCity()
-  const city = Object.values(ata.data).find(item=>item.id === userInfo.value.cityId)
+  const city = Object.values(ata.data).find(item => item.id === userInfo.value.cityId)
   userInfo.value.cityName = city.extName
 
   const userStatusCache = getUserStatusCache()
@@ -112,26 +112,31 @@ const cpuStatus = computed(() => {
     width: 100%;
     display: grid;
     grid-row-gap: 16px;
-    grid-template-columns:1fr 1fr 1fr;
+    grid-template-columns:1fr 1fr 1fr 1fr;
+    background-color: rgba(73, 73, 73, 0.84);
+    padding: 10px;
+    border-radius: 10px;
     margin-bottom: 40px;
-
     .item {
       font-size: 14px;
-
+      width: 240px;
+      letter-spacing: .05em;
       span {
-        display: inline-block;
         font-size: inherit;
-        min-width: 100px;
-
-        &:first-child:after {
-          content: ":";
-          margin: 0 10px 0 5px;
-        }
+        padding: 10px;
+        display: block;
+        background-color: #dfa32d;
+        border-radius: 15px 15px 0 0;
       }
 
       input {
+        padding: 10px;
         font-size: inherit;
-        padding: 5px;
+        width: 240px;
+        box-sizing: border-box;
+        border-radius: 0 0 15px 15px;
+        background-color: #ccc;
+        border: none;
       }
     }
   }
