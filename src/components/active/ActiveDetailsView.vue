@@ -50,16 +50,16 @@ const tableData = ref([
 
 const eventTypes = getEventTypesCache()
 const eventGroups = getEventTargetGroupTypesCache()
-const cpuEventType = computed(()=>{
-  return Object.values(eventTypes).find((item,index) => {
+const cpuEventType = computed(() => {
+  return Object.values(eventTypes).find((item, index) => {
     return index === placeholderEvent.value.category
   })
 })
-const cpuEventGroup = computed(()=>{
-  return Object.values(eventGroups).find((item,index) => index === placeholderEvent.value.targetGroupId)
+const cpuEventGroup = computed(() => {
+  return Object.values(eventGroups).find((item, index) => index === placeholderEvent.value.targetGroupId)
 })
 
-const cpuStatus = computed(()=>{
+const cpuStatus = computed(() => {
   return statusOptions.value.find((item) => {
     return item.value === placeholderEvent.value.status
   })?.label || "xx"
@@ -114,8 +114,6 @@ const cpuStatus = computed(()=>{
       </div>
     </div>
     <div class="user-info">
-
-
       <div class="item">
         <span>审核方式</span>
         <input type="text" disabled :value="placeholderEvent.userId == 1?'需审核':'无需审核'">
@@ -166,26 +164,38 @@ const cpuStatus = computed(()=>{
     width: 100%;
     display: grid;
     grid-row-gap: 16px;
-    grid-template-columns:1fr 1fr 1fr;
+    grid-template-columns:1fr 1fr 1fr 1fr;
     margin-bottom: 60px;
+    background-color: rgba(0, 0, 0, 0.33);
+    border-radius: 15px;
+    padding: 20px;
 
     .avatar {
-      width: 220px;
-      height: 220px;
+      width: 200px;
+      height: 200px;
+      border-radius: 0 0 15px 15px;
     }
 
     .item {
-      width: 200px;
-
+      width: 220px;
+      border-radius: 15px;
+      //box-shadow: 6px 4px 18px 0 rgba(58, 58, 58, 0.55);
+      height: fit-content;
+      letter-spacing: .05em;
       span {
-        min-width: 100px;
-        display: inline-block;
-        text-align-last: justify;
+        display: block;
+        background-color: #dfa32d;
+        border-radius: 15px 15px 0 0;
+        padding: 5px;
+      }
 
-        &:first-child:after {
-          content: ":";
-          margin: 0 10px 0 5px;
-        }
+      input {
+        border-radius: 0 0 15px 15px;
+        width: calc(100% - 20px);
+        background-color: #f3f3f3;
+        border: none;
+        font-size: 14px;
+        padding: 10px;
       }
     }
   }
@@ -193,9 +203,6 @@ const cpuStatus = computed(()=>{
   .user-list {
     width: 40%;
   }
-  input {
-    width: 100%;
-    padding: 5px;
-  }
+
 }
 </style>
