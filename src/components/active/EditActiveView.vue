@@ -124,7 +124,7 @@ const cpuEventGroup = computed(()=>{
   <div class="container">
     <div class="item">
       <span>活动Id</span>
-      <span>{{ editEvent.eventId }}</span>
+      <span class="edit-input">{{ editEvent.eventId }}</span>
     </div>
     <div class="item">
       <span>创建用户ID</span>
@@ -145,7 +145,7 @@ const cpuEventGroup = computed(()=>{
     </div>
     <div class="item">
       <span>活动类型</span>
-      <el-select v-model="editEvent.category" :placeholder="cpuEventType" style="width: 240px">
+      <el-select v-model="editEvent.category" :placeholder="cpuEventType" class="ipt">
         <el-option
             v-for="(item,index) of Object.values(eventTypes)"
             :key="index"
@@ -156,7 +156,7 @@ const cpuEventGroup = computed(()=>{
     </div>
     <div class="item">
       <span>目标用户群体</span>
-      <el-select v-model="editEvent.targetGroupId" :placeholder="cpuEventGroup" style="width: 240px">
+      <el-select v-model="editEvent.targetGroupId" :placeholder="cpuEventGroup" class="ipt">
         <el-option
             v-for="(item,index) of Object.values(eventGroups)"
             :key="index"
@@ -207,7 +207,7 @@ const cpuEventGroup = computed(()=>{
              :placeholder="placeholderEvent.currentParticipant"
              disabled
              v-model="editEvent.currentParticipant">
-      <el-button @click="gotoEventMemberView" type="info">查看</el-button>
+      <el-button @click="gotoEventMemberView" type="info" class="show-member">查看</el-button>
     </div>
     <div class="item">
       <span>最多人数</span>
@@ -217,7 +217,7 @@ const cpuEventGroup = computed(()=>{
     </div>
     <div class="item">
       <span>审核方式</span>
-      <el-select v-model="editEvent.audit" placeholder="Select" style="width: 240px">
+      <el-select v-model="editEvent.audit" placeholder="Select" class="ipt">
         <el-option
             v-for="item in auditOptions"
             :key="item.value"
@@ -241,7 +241,7 @@ const cpuEventGroup = computed(()=>{
     </div>
     <div class="item">
       <span>活动状态</span>
-      <el-select v-model="editEvent.status" placeholder="状态" style="width: 240px">
+      <el-select v-model="editEvent.status" placeholder="状态" class="ipt">
         <el-option
             v-for="item in statusOptions"
             :key="item.value"
@@ -258,6 +258,7 @@ const cpuEventGroup = computed(()=>{
 </template>
 
 <style scoped lang="less">
+@input-width:240px;
 .container {
   display: flex;
   column-gap: 10%;
@@ -267,30 +268,55 @@ const cpuEventGroup = computed(()=>{
 }
 
 .item {
-  width: 200px;
+  width: @input-width;
   font-size: 16px;
-
+  background-color: rgba(19, 19, 19, 0.82);
+  height: fit-content;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
   span {
+    //&:first-child {
+    //  &:after {
+    //    content: ":";
+    //    margin: 0 10px 0 5px;
+    //  }
+    //}
+    //text-align-last: justify;
     &:first-child {
-      &:after {
-        content: ":";
-        margin: 0 10px 0 5px;
-      }
+      border-radius: 10px 10px 0 0;
+      padding: 5px;
+      background-color: #dfa32d;
     }
-
-    text-align-last: justify;
-    display: inline-block;
   }
 
   .edit-input {
     font-size: initial;
     padding: 5px;
-    border-radius: 5px;
-    width: 160px;
+    height: 40px;
+    //border-radius: 0 0 10px 10px;
+    width: @input-width;
+    border-radius: 0;
+    box-sizing: border-box;
+    border: none;
+    background-color: #fff;
+    color: #2c2c2c;
   }
 
   .el-upload--picture-card {
     --el-upload-picture-card-size: 14px;
+  }
+
+  :deep(.el-input__wrapper) {
+    height: 40px;
+    border-radius: 0;
+  }
+  :deep(.el-input) {
+    width: @input-width;
+  }
+  :deep(.el-select__wrapper) {
+    height: 40px;
+    border-radius: 0;
   }
 }
 
@@ -316,8 +342,17 @@ const cpuEventGroup = computed(()=>{
 }
 
 .avatar {
-  width: 60px;
-  height: 60px;
+  width: 220px;
+  height: 220px;
+}
+
+.ipt {
+  width: @input-width !important;
+  height: 40px !important;
+}
+
+.show-member {
+  width: fit-content;
 }
 
 </style>
