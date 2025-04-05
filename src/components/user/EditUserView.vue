@@ -152,7 +152,7 @@ const submit = async () => {
   <div class="container">
     <div class="item">
       <span>用户Id</span>
-      <span>{{ editUser.userId }}</span>
+      <span class="edit-input">{{ editUser.userId }}</span>
     </div>
     <div class="item">
       <span>用户昵称</span>
@@ -243,6 +243,7 @@ const submit = async () => {
 </template>
 
 <style scoped lang="less">
+@input-width: 240px;
 .container {
   display: flex;
   column-gap: 10%;
@@ -252,29 +253,58 @@ const submit = async () => {
 }
 
 .item {
-  width: 200px;
+  width: @input-width;
   font-size: 16px;
+  background-color: rgba(19, 19, 19, 0.82);
+  height: fit-content;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
 
   span {
+    //&:first-child {
+    //  &:after {
+    //    content: ":";
+    //    margin: 0 10px 0 5px;
+    //  }
+    //}
     &:first-child {
-      &:after {
-        content: ":";
-        margin: 0 10px 0 5px;
-      }
+      border-radius: 10px 10px 0 0;
+      padding: 5px;
+      background-color: #dfa32d;
     }
   }
 
   .edit-input {
     font-size: initial;
     padding: 5px;
-    border-radius: 5px;
-    width: 160px;
+    width: @input-width;
+    border-radius: 0;
+    box-sizing: border-box;
+    border: none;
+    background-color: #fff;
+    color: #2c2c2c;
   }
 
   :deep(.el-upload--picture-card) {
     --el-upload-picture-card-size: 14px;
     width: 60px !important;
     height: 60px !important;
+  }
+
+  :deep(.el-input__wrapper) {
+    height: 40px;
+    border-radius: 0;
+  }
+
+  :deep(.el-input) {
+    width: @input-width;
+  }
+
+  :deep(.el-select__wrapper) {
+    height: 40px;
+    border-radius: 0;
   }
 }
 
@@ -300,14 +330,16 @@ const submit = async () => {
 }
 
 .avatar {
-  width: 60px;
-  height: 60px;
+  width: 240px;
+  height: 240px;
 }
 
 .avatar-uploader {
-  position: relative;
-  top: -50%;
-  left: 70%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.75;
 
   :deep(.el-upload--picture-card) {
     width: 100px;
