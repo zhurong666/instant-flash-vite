@@ -60,6 +60,10 @@ function createService() {
                     // Token 过期时
                     logout()
                     break
+                case 402:
+                    // Token 过期时
+                    error.message = "权限异常"
+                    break
                 case 403:
                     error.message = "拒绝访问"
                     break
@@ -90,6 +94,8 @@ function createService() {
                 default:
                     break
             }
+            console.log(error.response)
+            error.message = error.response?.data?.msg ?? error.message
             ElMessage.error(error.message)
             return Promise.reject(error)
         }
@@ -127,7 +133,7 @@ const service = createService()
 /** 用于网络请求的方法 */
 export const request = createRequest(service)
 export const baseURL = import.meta.env.VITE_BASE_API
-export const baseImgURL = "http://192.168.1.121:9000/"
+export const baseImgURL = "https://192.168.1.121:9000/"
 export enum HttpMethod {
     GET = "GET",
     POST = "POST",

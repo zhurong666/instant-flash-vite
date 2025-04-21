@@ -34,28 +34,34 @@ const loadData = async (pageNum = 1, pageSize = 10) => {
 }
 
 async function commit() {
-  const eventId = tableData[index].id
-  const data = await request({
-    url: 'admin/event/' + eventId + "/review",
-    method: 'POST',
-    headers: {
-      toEventId: eventId
-    },
-    params: {
-      isApproved: that.isApproved,
-      reason: msg.value
+  const eventId = that.id
+  try {
+    const data = await request({
+      url: 'admin/event/' + eventId + "/review",
+      method: 'POST',
+      headers: {
+        toEventId: eventId
+      },
+      params: {
+        isApproved: that.isApproved,
+        reason: msg.value
+      }
+    })
+    if (data.code == 200) {
+      tableData.splice(that.index, 1)
     }
-  })
-  if (data.code == 200) {
-    tableData.splice(index, 1)
+  } catch (err) {
+    //
+  } finally {
+    showCommit.value = false
   }
-  showCommit.value = false
 }
 
+// 获取当前组件实例的方法
 const that = getCurrentInstance()
-let index = 0
-const showCommitM = (index: number, isApproved: boolean) => {
+const showCommitM = (index:number,id: number, isApproved: boolean) => {
   that.index = index
+  that.id = id
   that.isApproved = isApproved
   showCommit.value = true
 }
@@ -73,6 +79,7 @@ const paginationChange = (pageNum: number, pageSize: number) => {
   <div class="table-container">
     <el-table
         :data="tableData"
+        row-key="id"
         size="large"
         style="width: 100%">
       <el-table-column fixed prop="id" label="活动编号" width="150"/>
@@ -96,8 +103,8 @@ const paginationChange = (pageNum: number, pageSize: number) => {
           <el-button link type="primary" size="small"
                      @click="handleClick(scope.row.id)">详情
           </el-button>
-          <el-button link type="primary" size="small" @click="showCommitM(scope.$index,true)">通过</el-button>
-          <el-button link type="primary" size="small" @click="showCommitM(scope.$index,false)">打回</el-button>
+          <el-button link type="primary" size="small" @click="showCommitM(scope.$index,scope.row.id,true)">通过</el-button>
+          <el-button link type="primary" size="small" @click="showCommitM(scope.$index,scope.row.id,false)">打回</el-button>
         </template>
       </el-table-column>
     </el-table>
