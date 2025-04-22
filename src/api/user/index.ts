@@ -51,16 +51,20 @@ export function updateUserStatus(userInfo: { userId: number, status: number }) {
         method: "put",
         headers: {toUserId: userInfo.userId},
         params: {
-            status:userInfo.status
+            status: userInfo.status
         },
         data: userInfo
     })
 }
 
 
-export function getUserByAdminCityId() {
+export function getUserByAdminCityId({pageNum = 0, pageSize = 10}) {
     return request<string>({
         url: "/admin/user/adminCityId",
+        params: {
+            pageNum,
+            pageSize,
+        },
         method: HttpMethod.GET
     })
 }

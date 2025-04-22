@@ -7,6 +7,7 @@ import {SearchResponseData} from "@/api/login/types/search.ts";
 import {getUserByAdminCityId, updateUserStatus} from "@/api/user";
 import {tLog} from "@/utils/tip";
 import {useUserStore} from "@/store/modules/user";
+import {baseImgURL} from "@/utils/service";
 
 const inputTxt = ref("")
 
@@ -79,15 +80,34 @@ const searchEnter = async (text) => {
   }
 }
 const userStore = useUserStore()
-onMounted(()=>{
-  getUserByAdminCityId().then(resp=>{
+
+const paginationChange = (pageNum: number, pageSize: number) => {
+  getUserByAdminCityId({pageNum}).then(resp=>{
     if (resp.code == 200) {
       tableData.splice(0)
       const user = userStore.getCacheUserInfo()
       const data = resp.data.filter(item=>{
         return item.id !== user.id //忽略自己
       })
-      console.log(data)
+      data.forEach(item => {
+        item.avatar = baseImgURL + item.avatar
+      })
+      tableData.push(...data)
+    }
+  })
+}
+
+onMounted(()=>{
+  getUserByAdminCityId({pageNum:0}).then(resp=>{
+    if (resp.code == 200) {
+      tableData.splice(0)
+      const user = userStore.getCacheUserInfo()
+      const data = resp.data.filter(item=>{
+        return item.id !== user.id //忽略自己
+      })
+      data.forEach(item => {
+        item.avatar = baseImgURL + item.avatar
+      })
       tableData.push(...data)
     }
   })
@@ -126,15 +146,31 @@ onMounted(()=>{
         size="large"
         style="width: 100%">
       <el-table-column fixed prop="id" label="用户编号" width="150"/>
+      <el-table-column prop="username" label="用户昵称" width="120"/>
+      <el-table-column label="用户头像" width="150">
+        <template #default="scope">
+          <el-image preview-teleported :src="scope.row.avatar"/>
+        </template>
+      </el-table-column>
       <el-table-column prop="phone" label="手机号码" width="150"/>
       <el-table-column prop="email" label="用户邮箱" width="180"/>
-      <el-table-column prop="username" label="用户昵称" width="120"/>
-      <el-table-column prop="gender" label="性别" width="120"/>
-      <el-table-column prop="integral" label="积分" width="120"/>
-      <el-table-column prop="reputation" label="信誉值" width="120"/>
-      <el-table-column prop="address" label="账号所属地" width="220"/>
-      <el-table-column prop="lastAddress" label="最后上线所在地" width="220"/>
-      <el-table-column prop="lastTime" label="最后上线时间" width="180"/>
+      <el-table-column prop="gender" label="性别" width="120">
+        <template #default="scope">
+          {{!scope.row.gender?'男':'女'}}
+        </template>
+      </el-table-column>
+      <el-table-column prop="worth.credit" label="积分" width="120"/>
+      <el-table-column prop="worth.reputation" label="信誉值" width="120"/>
+      <el-table-column prop="userDetail.lastIp" label="最后上线所在地" width="220">
+        <template #default="scope">
+          {{scope.row.userDetail.lastIp || '短期未登录'}}
+        </template>
+      </el-table-column>
+      <el-table-column prop="userDetail.lastTime" label="最后上线时间" width="180">
+        <template #default="scope">
+          {{scope.row.userDetail.lastTime || '短期未登录'}}
+        </template>
+      </el-table-column>
       <el-table-column fixed="right" label="操作" min-width="120">
         <template #default="scope">
           <el-button link type="primary" size="small"
@@ -156,6 +192,7 @@ onMounted(()=>{
         :pager-count="7"
         layout="prev, pager, next"
         :total="100"
+        @change="paginationChange"
     />
   </div>
 
@@ -236,5 +273,10 @@ onMounted(()=>{
   div {
     margin-bottom: 10px;
   }
+}
+.el-image {
+  width: 60%;
+  height: 60%;
+  border-radius: 50%;
 }
 </style>
