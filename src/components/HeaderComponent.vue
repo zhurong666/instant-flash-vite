@@ -2,6 +2,7 @@
 // 1 展开或者折叠
 import {reactive, ref} from "vue";
 import {removeToken} from "@/utils/cache/cookies.ts";
+import router from "@/router";
 
 // const headerStore = useHeaderStore()
 const FoldOrExpand = ref('Fold')
@@ -15,6 +16,9 @@ const isExpand = () => {
 }
 const logout = () => {
   removeToken()
+}
+const gotoMine = () => {
+  router.push({ path: "/me" })
 }
 
 const userInfo = reactive({
@@ -37,7 +41,7 @@ const userInfo = reactive({
         </div>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item icon="User">个人中心</el-dropdown-item>
+            <el-dropdown-item icon="User" @click="gotoMine">个人中心</el-dropdown-item>
             <el-dropdown-item icon="SwitchButton" @click="logout">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </template>

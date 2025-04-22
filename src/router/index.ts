@@ -38,6 +38,18 @@ const routes: RouteRecordRaw[] = [
                 meta: {menuId: '1-2'},
                 component: () => import("../components/index/Set.vue")
             },
+            {
+                path: '/me',
+                name: 'Me',
+                // meta: {menuId: '10-1'},
+                component: () => import("../pages/MineView.vue")
+            },
+            {
+                path: '/setting',
+                name: 'Setting',
+                // meta: {menuId: '10-1'},
+                component: () => import("../pages/SettingView.vue")
+            },
         ]
     },
     {
