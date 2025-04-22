@@ -55,6 +55,10 @@ const denyClick = async (index) => {
 }
 
 const searchEnter = async (text) => {
+  if (text.trim().length < 1) {
+    getData()
+    return
+  }
   let url = "/admin/user"
   switch (searchType.value) {
     case 1:
@@ -75,14 +79,22 @@ const searchEnter = async (text) => {
   if (resp.code == 200) {
     tableData.splice(0)
     const data = resp.data
-    console.log(data)
+    data.avatar = baseImgURL + data.avatar
+    tableData.splice(0)
     tableData.push(data)
   }
 }
 const userStore = useUserStore()
 
 const paginationChange = (pageNum: number, pageSize: number) => {
-  getUserByAdminCityId({pageNum}).then(resp=>{
+  getData({pageNum})
+}
+
+onMounted(()=>{
+  getData()
+})
+function getData(pageNum = 0, pageSize = 10) {
+  getUserByAdminCityId({pageNum, pageSize}).then(resp=>{
     if (resp.code == 200) {
       tableData.splice(0)
       const user = userStore.getCacheUserInfo()
@@ -96,23 +108,6 @@ const paginationChange = (pageNum: number, pageSize: number) => {
     }
   })
 }
-
-onMounted(()=>{
-  getUserByAdminCityId({pageNum:0}).then(resp=>{
-    if (resp.code == 200) {
-      tableData.splice(0)
-      const user = userStore.getCacheUserInfo()
-      const data = resp.data.filter(item=>{
-        return item.id !== user.id //忽略自己
-      })
-      data.forEach(item => {
-        item.avatar = baseImgURL + item.avatar
-      })
-      tableData.push(...data)
-    }
-  })
-})
-
 </script>
 
 <template>

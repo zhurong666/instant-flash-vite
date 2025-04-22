@@ -24,6 +24,7 @@ const loadData = async (pageNum = 1, pageSize = 10) => {
   data.forEach(item => {
     item.avatar = baseImgURL + item.avatar
   })
+  tableData.splice(0)
   tableData.push(...data)
 }
 </script>

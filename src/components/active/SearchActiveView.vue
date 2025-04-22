@@ -27,19 +27,19 @@ const tableData = reactive([])
 
 const handleClick = (index) => {
   console.log("handleClick", index)
+  console.log(router.push)
   router.push({
     path: `/active/detail/${index}`,
+  }).catch(e => {
+    console.log(e)
   })
 }
 const edit = (index) => {
   console.log("edit", index)
   router.push({
     path: `/active/edit/${tableData.at(index).id}`,
-  }).catch(failure => {
-    console.log(failure)
-    if (isNavigationFailure(failure, NavigationFailureType.redirected)) {
-      showToast('Login in order to access the admin panel')
-    }
+  }).catch(e => {
+    console.log(e)
   })
 }
 
