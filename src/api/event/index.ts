@@ -16,7 +16,7 @@ export function getEventById(eventId: number) {
 }
 
 export function getEventMemberById(eventId: number) {
-    return request<any>({
+    return request<any[]>({
         url: "/event/getMembers/" + eventId,
         method: "get",
     })

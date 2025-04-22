@@ -173,7 +173,7 @@ const paginationChange = (pageNum: number, pageSize: number) => {
     </el-form-item>
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="centerDialogVisible = false">取消</el-button>
+        <el-button @click="showCommit = false">取消</el-button>
         <el-button type="primary" @click="commit">
           确认
         </el-button>

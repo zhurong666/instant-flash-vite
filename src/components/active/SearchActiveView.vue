@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, getCurrentInstance, onMounted, reactive, ref} from "vue";
+import {getCurrentInstance, onMounted, reactive, ref} from "vue";
 import {Search} from '@element-plus/icons-vue'
 import {getCityByAdminRole, searchApi} from "@/api/event";
 import router from "@/router";
@@ -26,13 +26,20 @@ const centerDialogVisible = ref(false)
 const tableData = reactive([])
 
 const handleClick = (index) => {
+  console.log("handleClick", index)
   router.push({
     path: `/active/detail/${index}`,
   })
 }
 const edit = (index) => {
+  console.log("edit", index)
   router.push({
     path: `/active/edit/${tableData.at(index).id}`,
+  }).catch(failure => {
+    console.log(failure)
+    if (isNavigationFailure(failure, NavigationFailureType.redirected)) {
+      showToast('Login in order to access the admin panel')
+    }
   })
 }
 
@@ -230,7 +237,7 @@ const paginationChange = (pageNum: number, pageSize: number) => {
     </el-form-item>
     <template #footer>
       <div class="dialog-footer">
-        <el-button @click="centerDialogVisible = false">取消</el-button>
+        <el-button @click="showCommit = false">取消</el-button>
         <el-button type="primary" @click="commit">
           确认
         </el-button>
