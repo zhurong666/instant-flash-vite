@@ -5,8 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc -b && vite build",
-    "postbuild": "rsync -avz --delete ./dist/ $npm_config_deploy_path",
+    "build1": "vue-tsc -b && vite build",
+    "build": "vite build",
+    "postbuild1": "export SSHPASS='123456' && sshpass -e rsync -avz --delete ./dist/ $npm_config_deploy_path",
+    "postbuild2": "rsync -avz --delete /root/www/html/ ./dist/ root@192.168.1.121:/root/www/html",
+    "postbuild3": "rsync -avz ./dist/ root@192.168.1.121:/root/www/html/",
+    "postbuild": "rsync --progress --delete -av -e \"\\\"D:\\Program Files\\cwrsync\\bin\\ssh.exe\\\"\" ./dist/ root@192.168.1.121:/root/www/html/",
     "preview": "vite preview",
     "upload": "node upload.mjs"
   },
