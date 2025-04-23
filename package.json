@@ -10,7 +10,8 @@
     "postbuild1": "export SSHPASS='123456' && sshpass -e rsync -avz --delete ./dist/ $npm_config_deploy_path",
     "postbuild2": "rsync -avz --delete /root/www/html/ ./dist/ root@192.168.1.121:/root/www/html",
     "postbuild3": "rsync -avz ./dist/ root@192.168.1.121:/root/www/html/",
-    "postbuild": "rsync --progress --delete -av -e \"\\\"D:\\Program Files\\cwrsync\\bin\\ssh.exe\\\"\" ./dist/ root@192.168.1.121:/root/www/html/",
+    "postbuild4": "rsync --progress --delete -av -e \"\\\"D:\\Program Files\\cwrsync\\bin\\ssh.exe\\\"\" ./dist/ root@192.168.1.121:/usr/share/nginx/html",
+    "postbuild": "rsync --progress --delete -av --chmod=D755,F644 -e \"\\\"D:\\Program Files\\cwrsync\\bin\\ssh.exe\\\"\" ./dist/ root@192.168.1.121:/usr/share/nginx/html",
     "preview": "vite preview",
     "upload": "node upload.mjs"
   },

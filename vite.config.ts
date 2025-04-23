@@ -12,7 +12,7 @@ export default defineConfig({
         }
     },
     server: {
-        proxy: {
+        proxy: process.env.NODE_ENV !== 'production'?{
             // 字符串简写写法
             // '/foo': 'http://localhost:4567',
             // 选项写法
@@ -41,6 +41,6 @@ export default defineConfig({
             //     target: 'ws://localhost:3000',
             //     ws: true
             // }
-        }
+        }:{}
     }
 })
