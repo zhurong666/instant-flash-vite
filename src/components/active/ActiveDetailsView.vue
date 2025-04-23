@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {computed, onMounted, ref, watch} from "vue";
-import {getEventById, getEventMemberById} from "@/api/event";
+import {getEventById, getEventMemberById, getEventRole} from "@/api/event";
 import {useRoute} from "vue-router";
 import {baseImgURL} from "@/utils/service";
 import {getEventTargetGroupTypesCache, getEventTypesCache} from "@/utils/cache/common";
@@ -20,12 +20,16 @@ onMounted(() => {
     }
   })
 })
+
+let juese = {}
 const loadData = async () => {
+  juese = (await getEventRole()).data
   const data = await getEventById(params.id)
   placeholderEvent.value = data.data
   const {data: data2}: { data: [] } = await getEventMemberById(params.id)
   data2.forEach(item => {
     item.avatar = baseImgURL + item.avatar
+    item.role = juese[item.role]
   })
   console.log(data2)
   tableData.value = data2
@@ -147,7 +151,8 @@ const cpuStatus = computed(() => {
       <el-table :data="tableData" style="width: 100%">
         <el-table-column prop="id" label="用户Id" width="180"/>
         <el-table-column prop="username" label="用户名称" width="180"/>
-        <el-table-column label="用户名称" width="180">
+        <el-table-column prop="role" label="活动角色" width="150"/>
+        <el-table-column label="用户头像" width="180">
           <template #default="scope">
             <el-image style="width: 60px; height: 60px" :src="scope.row.avatar" fit="cover"></el-image>
           </template>

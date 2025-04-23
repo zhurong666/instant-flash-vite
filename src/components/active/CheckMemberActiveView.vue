@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import {onMounted, reactive} from "vue";
+import {onMounted, reactive, ref} from "vue";
 import {useRoute} from "vue-router";
-import {getEventMemberById} from "@/api/event";
+import {getEventMemberById, getEventRole} from "@/api/event";
 import {baseImgURL} from "@/utils/service";
 
 const tableData = reactive([])
@@ -18,11 +18,14 @@ const handleClick = (id: number) => {
 
 }
 
+let juese = {}
 const loadData = async (pageNum = 1, pageSize = 10) => {
   const eventId = params.id
+  juese = (await getEventRole()).data
   const {data} = await getEventMemberById(eventId)
   data.forEach(item => {
     item.avatar = baseImgURL + item.avatar
+    item.role = juese[item.role]
   })
   tableData.splice(0)
   tableData.push(...data)
@@ -38,6 +41,7 @@ const loadData = async (pageNum = 1, pageSize = 10) => {
         style="width: 100%">
       <el-table-column fixed prop="id" label="用户编号" width="150"/>
       <el-table-column prop="username" label="用户昵称" width="150"/>
+      <el-table-column prop="role" label="活动角色" width="150"/>
       <el-table-column label="用户头像" width="150">
         <template #default="scope">
           <el-image preview-teleported :src="scope.row.avatar"/>

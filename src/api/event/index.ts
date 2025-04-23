@@ -22,6 +22,13 @@ export function getEventMemberById(eventId: number) {
     })
 }
 
+export function getEventRole() {
+    return request<any[]>({
+        url: "/common/eventRole",
+        method: "get",
+    })
+}
+
 /** 获取用户详情 */
 export function denyEvent(eventId: number) {
     return request<string>({
