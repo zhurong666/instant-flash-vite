@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
+    "postbuild": "rsync -avz --delete ./dist/ $npm_config_deploy_path",
     "preview": "vite preview",
     "upload": "node upload.mjs"
   },
