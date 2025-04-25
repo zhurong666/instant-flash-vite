@@ -10,8 +10,7 @@ import {getEventTargetGroupTypesCache, getEventTypesCache} from "@/utils/cache/c
 const {params} = useRoute()
 
 const editEvent = reactive<EditEvent>({
-  eventId: 1,
-  userId: 1,
+  eventId: params.id,
 })
 
 const placeholderEvent = ref({})
