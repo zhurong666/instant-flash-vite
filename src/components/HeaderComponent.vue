@@ -1,8 +1,10 @@
 <script setup lang="ts">
 // 1 展开或者折叠
-import {reactive, ref} from "vue";
+import {reactive, ref ,toRefs} from "vue";
 import {removeToken} from "@/utils/cache/cookies.ts";
 import router from "@/router";
+import {useUserStore} from "@/store/modules/user.ts";
+import {getUserInfo} from "@/utils/cache/cookies.ts";
 
 // const headerStore = useHeaderStore()
 const FoldOrExpand = ref('Fold')
@@ -22,22 +24,29 @@ const gotoMine = () => {
 }
 
 const userInfo = reactive({
-  username: "小明"
+  username: getUserInfo().username
 })
+
+const useUser = toRefs(useUserStore())
+console.log("用户",useUser)
+console.log("用户",useUser.username.value)
+console.log("用户",useUser.username)
+
+
 </script>
 
 <template>
   <div class="header">
     <!--左边-->
-    <div class="left-content">
+    <!-- <div class="left-content">
       <component class="expandOrFold" @click="isExpand" :is="FoldOrExpand"/>
-    </div>
+    </div> -->
     <!--右边-->
     <div class="right-content">
       <el-dropdown trigger="click">
         <div class="el-dropdown-link">
           <img src="@/assets/vue.svg" alt="头像"/>
-          <div>{{ userInfo.username }}</div>
+          <div class="content">{{ userInfo.username }}</div>
         </div>
         <template #dropdown>
           <el-dropdown-menu>
@@ -96,6 +105,9 @@ const userInfo = reactive({
         width: 40px;
         height: 40px;
         margin-right: 10px;
+      }
+      .content {
+        margin: 0 auto;
       }
 
       .el-icon--right {
