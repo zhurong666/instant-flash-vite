@@ -149,10 +149,10 @@ const cpuStatus = computed(() => {
     <div class="user-list">
       <div>活动成员列表</div>
       <el-table :data="tableData" style="width: 100%">
-        <el-table-column prop="id" label="用户Id" width="180"/>
-        <el-table-column prop="username" label="用户名称" width="180"/>
-        <el-table-column prop="role" label="活动角色" width="150"/>
-        <el-table-column label="用户头像" width="180">
+        <el-table-column align="center"  prop="id" label="用户Id" width="180"/>
+        <el-table-column align="center"  prop="username" label="用户名称" width="180"/>
+        <el-table-column align="center"  prop="role" label="活动角色" width="150"/>
+        <el-table-column align="center"  label="用户头像" width="180">
           <template #default="scope">
             <el-image style="width: 60px; height: 60px" :src="scope.row.avatar" fit="cover"></el-image>
           </template>
@@ -171,7 +171,7 @@ const cpuStatus = computed(() => {
     grid-row-gap: 16px;
     grid-template-columns:1fr 1fr 1fr 1fr;
     margin-bottom: 60px;
-    background-color: rgba(0, 0, 0, 0.33);
+    background-color: var(--el-bg-color);
     border-radius: 15px;
     padding: 20px;
 
@@ -189,7 +189,7 @@ const cpuStatus = computed(() => {
       letter-spacing: .05em;
       span {
         display: block;
-        background-color: #dfa32d;
+        background-color: #8CB4D4;
         border-radius: 15px 15px 0 0;
         padding: 5px;
       }

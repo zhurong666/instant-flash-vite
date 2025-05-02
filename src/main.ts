@@ -3,7 +3,9 @@ import './style.css'
 import App from './App.vue'
 
 import ElementPlus from 'element-plus'
-import 'element-plus/dist/index.css'
+// import 'element-plus/dist/index.css'
+import 'element-plus/theme-chalk/src/index.scss'
+// import './styles/element/index.scss'
 import router from "./router";
 import pinia from "./store";
 import {authGuard} from "./utils/authGuard.ts";

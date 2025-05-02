@@ -137,36 +137,37 @@ function getData(pageNum = 0, pageSize = 10) {
 
   <div class="table-container">
     <el-table
+        border
         :data="tableData"
         size="large"
         style="width: 100%">
-      <el-table-column fixed prop="id" label="用户编号" width="150"/>
-      <el-table-column prop="username" label="用户昵称" width="120"/>
-      <el-table-column label="用户头像" width="150">
+      <el-table-column align="center"  fixed prop="id" label="用户编号" width="150"/>
+      <el-table-column align="center"  prop="username" label="用户昵称" width="120"/>
+      <el-table-column align="center"  label="用户头像" width="150">
         <template #default="scope">
           <el-image preview-teleported :src="scope.row.avatar"/>
         </template>
       </el-table-column>
-      <el-table-column prop="phone" label="手机号码" width="150"/>
-      <el-table-column prop="email" label="用户邮箱" width="180"/>
-      <el-table-column prop="gender" label="性别" width="120">
+      <el-table-column align="center"  prop="phone" label="手机号码" width="150"/>
+      <el-table-column align="center"  prop="email" label="用户邮箱" width="180"/>
+      <el-table-column align="center"  prop="gender" label="性别" width="120">
         <template #default="scope">
           {{!scope.row.gender?'男':'女'}}
         </template>
       </el-table-column>
-      <el-table-column prop="worth.credit" label="积分" width="120"/>
-      <el-table-column prop="worth.reputation" label="信誉值" width="120"/>
-      <el-table-column prop="userDetail.lastIp" label="最后上线所在地" width="220">
+      <el-table-column align="center"  prop="worth.credit" label="积分" width="120"/>
+      <el-table-column align="center"  prop="worth.reputation" label="信誉值" width="120"/>
+      <el-table-column align="center"  prop="userDetail.lastIp" label="最后上线所在地" width="220">
         <template #default="scope">
           {{scope.row.userDetail.lastIp || '短期未登录'}}
         </template>
       </el-table-column>
-      <el-table-column prop="userDetail.lastTime" label="最后上线时间" width="180">
+      <el-table-column align="center"  prop="userDetail.lastTime" label="最后上线时间" width="180">
         <template #default="scope">
           {{scope.row.userDetail.lastTime || '短期未登录'}}
         </template>
       </el-table-column>
-      <el-table-column fixed="right" label="操作" min-width="120">
+      <el-table-column align="center"  fixed="right" label="操作" min-width="160">
         <template #default="scope">
           <el-button link type="primary" size="small"
                      @click="handleClick(scope.$index)">详情

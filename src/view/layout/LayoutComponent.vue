@@ -37,4 +37,8 @@ import HeaderComponent from "@/components/HeaderComponent.vue";
   width: 100%;
   text-align: center;
 }
+.el-aside {
+  margin-top: 80px;
+}
+
 </style>

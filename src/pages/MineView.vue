@@ -89,7 +89,7 @@ const cpuStatus = computed(() => {
 .user-info-container {
   .user-info {
     width: 100%;
-    background-color: rgba(73, 73, 73, 0.84);
+    background-color: #8CB4D4;
     padding: 10px;
     border-radius: 10px;
     margin-bottom: 40px;
@@ -124,7 +124,7 @@ const cpuStatus = computed(() => {
         min-width: 110px;
         font-size: inherit;
         padding: 10px;
-        background-color: rgba(86, 190, 236, 0.77);
+        background-color: rgba(74, 74, 74, 0.77);
         display: inline-block;
         text-align: end;
         vertical-align: middle;

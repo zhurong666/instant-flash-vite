@@ -113,7 +113,7 @@ const cpuStatus = computed(() => {
     display: grid;
     grid-row-gap: 16px;
     grid-template-columns:1fr 1fr 1fr 1fr;
-    background-color: rgba(73, 73, 73, 0.84);
+    background-color: #8CB4D4;
     padding: 10px;
     border-radius: 10px;
     margin-bottom: 40px;

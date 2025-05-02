@@ -1,0 +1,17 @@
+@forward 'element-plus/theme-chalk/src/common/var.scss' with (
+  $bg-color: (
+   '': #DBEEF0,
+   'page': #ffffff,
+   'overlay': #ffffff,
+  ),
+  $border-color:(
+    'lighter': #cfe2f1,
+  ),
+  $menu:(
+    'bg-color': #8CB4D4,
+  )
+);
+
+// If you just import on demand, you can ignore the following content.
+// 如果你想导入所有样式:
+// @use "element-plus/theme-chalk/src/index.scss" as *;

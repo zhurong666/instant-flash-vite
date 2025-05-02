@@ -1,24 +1,36 @@
 import {defineConfig} from 'vite'
 import vue from '@vitejs/plugin-vue'
 import {resolve} from 'path'
-
+import ElementPlus from 'unplugin-element-plus/vite'
 // https://vitejs.dev/config/
 export default defineConfig({
-    plugins: [vue()],
+    plugins: [
+        vue(),
+        ElementPlus({
+            useSource: true,
+        }),
+    ],
     resolve: {
         alias: {
             /** @ 符号指向 src 目录 */
             "@": resolve(__dirname, "./src")
         }
     },
+    css: {
+        preprocessorOptions: {
+            scss: {
+                additionalData: `@use "@/styles/element/index.scss" as *;`,
+            },
+        },
+    },
     server: {
-        proxy: process.env.NODE_ENV !== 'production'?{
+        proxy: process.env.NODE_ENV !== 'production' ? {
             // 字符串简写写法
             // '/foo': 'http://localhost:4567',
             // 选项写法
             '/api': {
-                target: 'http://192.168.1.121:8080',
-                // target: 'https://api.yunzou.cloudns.org:10088/',
+                // target: 'http://192.168.1.121:8080',
+                target: 'https://api.yunzou.cloudns.org:10088/',
                 changeOrigin: true,
                 rewrite: (path) => path.replace(/^\/api/, '')
             },
@@ -34,13 +46,13 @@ export default defineConfig({
             //     changeOrigin: true,
             //     configure: (proxy, options) => {
             //         proxy 是 'http-proxy' 的实例
-                // }
+            // }
             // },
             // Proxying websockets or socket.io
             // '/socket.io': {
             //     target: 'ws://localhost:3000',
             //     ws: true
             // }
-        }:{}
+        } : {}
     }
 })

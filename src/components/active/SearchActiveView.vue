@@ -163,26 +163,27 @@ const paginationChange = (pageNum: number, pageSize: number) => {
 
   <div class="table-container">
     <el-table
+        border
         :data="tableData"
         size="large"
         style="width: 100%">
-      <el-table-column fixed prop="id" label="活动编号" width="150"/>
-      <el-table-column prop="userId" label="用户编号" width="150"/>
-      <el-table-column prop="name" label="活动名称" width="120"/>
-      <el-table-column label="宣传图片" width="150">
+      <el-table-column align="center"  fixed prop="id" label="活动编号" width="150"/>
+      <el-table-column align="center"  prop="userId" label="用户编号" width="150"/>
+      <el-table-column align="center"  prop="name" label="活动名称" width="120"/>
+      <el-table-column align="center"  label="宣传图片" width="150">
         <template #default="scope">
           <el-image preview-teleported :src="scope.row.imageUrls"/>
         </template>
       </el-table-column>
-      <el-table-column prop="category" label="活动类型" width="120"/>
-      <el-table-column prop="targetGroupId" label="目标用户群体" width="120"/>
-      <el-table-column prop="address" label="活动地点" width="220"/>
-      <el-table-column prop="regStartTime" label="报名开始时间" width="180"/>
-      <el-table-column prop="regEndTime" label="报名结束时间" width="180"/>
-      <el-table-column prop="startTime" label="活动开始时间" width="180"/>
-      <el-table-column prop="endTime" label="活动结束时间" width="180"/>
-      <el-table-column prop="maxParticipant" label="最多人数" width="180"/>
-      <el-table-column fixed="right" label="操作" min-width="120">
+      <el-table-column align="center"  prop="category" label="活动类型" width="120"/>
+      <el-table-column align="center"  prop="targetGroupId" label="目标用户群体" width="120"/>
+      <el-table-column align="center"  prop="address" label="活动地点" width="220"/>
+      <el-table-column align="center"  prop="regStartTime" label="报名开始时间" width="180"/>
+      <el-table-column align="center"  prop="regEndTime" label="报名结束时间" width="180"/>
+      <el-table-column align="center"  prop="startTime" label="活动开始时间" width="180"/>
+      <el-table-column align="center"  prop="endTime" label="活动结束时间" width="180"/>
+      <el-table-column align="center"  prop="maxParticipant" label="最多人数" width="180"/>
+      <el-table-column align="center"  fixed="right" label="操作" min-width="160">
         <template #default="scope">
           <el-button link type="primary" size="small"
                      @click="handleClick(scope.row.id)">详情

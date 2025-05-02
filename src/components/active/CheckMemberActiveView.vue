@@ -35,19 +35,20 @@ const loadData = async (pageNum = 1, pageSize = 10) => {
 <template>
   <div class="table-container">
     <el-table
+        border
         :data="tableData"
         row-key="id"
         size="large"
         style="width: 100%">
-      <el-table-column fixed prop="id" label="用户编号" width="150"/>
-      <el-table-column prop="username" label="用户昵称" width="150"/>
-      <el-table-column prop="role" label="活动角色" width="150"/>
-      <el-table-column label="用户头像" width="150">
+      <el-table-column align="center"  fixed prop="id" label="用户编号" width="150"/>
+      <el-table-column align="center"  prop="username" label="用户昵称" width="150"/>
+      <el-table-column align="center"  prop="role" label="活动角色" width="150"/>
+      <el-table-column align="center"  label="用户头像" width="150">
         <template #default="scope">
           <el-image preview-teleported :src="scope.row.avatar"/>
         </template>
       </el-table-column>
-      <el-table-column fixed="right" label="操作" min-width="120">
+      <el-table-column align="center"  fixed="right" label="操作" min-width="160">
         <template #default="scope">
           <el-button link type="primary" size="small"
                      @click="handleClick(scope.row.id)">详情
