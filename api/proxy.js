@@ -4,7 +4,7 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 const proxyHandler = (req, res) => {
     let target = '';
     // 根据请求路径，设置代理目标地址
-    if (req.url.startsWith('/backend')) {
+    if (req.url.startsWith('/api')) {
         target = 'https://api.yunzou.cloudns.org:10088/'; // 替换成实际的 API 地址
         // target = 'https://minio.yunzou.cloudns.org:19000/'; // 替换成实际的 API 地址
     }
@@ -14,7 +14,7 @@ const proxyHandler = (req, res) => {
         target,
         changeOrigin: true,
         pathRewrite: {
-            '^/backend/': '/', // 重写路径，把 `/backend` 移除
+            '^/api/': '/', // 重写路径，把 `/backend` 移除
         },
     })(req, res);
 };
