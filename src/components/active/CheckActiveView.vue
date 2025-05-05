@@ -59,7 +59,7 @@ async function commit() {
 
 // 获取当前组件实例的方法
 const that = getCurrentInstance()
-const showCommitM = (index:number,id: number, isApproved: boolean) => {
+const showCommitM = (index: number, id: number, isApproved: boolean) => {
   that.index = index
   that.id = id
   that.isApproved = isApproved
@@ -70,6 +70,21 @@ const msg = ref('')
 
 const paginationChange = (pageNum: number, pageSize: number) => {
   loadData(pageNum, pageSize)
+}
+const allPass = () => {
+  for (let i of tableData) {
+    request({
+      url: 'admin/event/' + i.id + "/review",
+      method: 'POST',
+      headers: {
+        toEventId: i.id
+      },
+      params: {
+        isApproved: true,
+        reason: msg.value
+      }
+    })
+  }
 }
 </script>
 
@@ -83,29 +98,31 @@ const paginationChange = (pageNum: number, pageSize: number) => {
         row-key="id"
         size="large"
         style="width: 100%">
-      <el-table-column align="center"  fixed prop="id" label="活动编号" width="150"/>
-      <el-table-column align="center"  prop="userId" label="用户编号" width="150"/>
-      <el-table-column align="center"  prop="name" label="活动名称" width="120"/>
-      <el-table-column align="center"  label="宣传图片" width="150">
+      <el-table-column align="center" fixed prop="id" label="活动编号" width="150"/>
+      <el-table-column align="center" prop="userId" label="用户编号" width="150"/>
+      <el-table-column align="center" prop="name" label="活动名称" width="120"/>
+      <el-table-column align="center" label="宣传图片" width="150">
         <template #default="scope">
           <el-image preview-teleported :src="scope.row.imageUrls"/>
         </template>
       </el-table-column>
-      <el-table-column align="center"  prop="category" label="活动类型" width="120"/>
-      <el-table-column align="center"  prop="targetGroupId" label="目标用户群体" width="120"/>
-      <el-table-column align="center"  prop="address" label="活动地点" width="220"/>
-      <el-table-column align="center"  prop="regStartTime" label="报名开始时间" width="180"/>
-      <el-table-column align="center"  prop="regEndTime" label="报名结束时间" width="180"/>
-      <el-table-column align="center"  prop="startTime" label="活动开始时间" width="180"/>
-      <el-table-column align="center"  prop="endTime" label="活动结束时间" width="180"/>
-      <el-table-column align="center"  prop="maxParticipant" label="最多人数" width="180"/>
-      <el-table-column align="center"  fixed="right" label="操作" min-width="160">
+      <el-table-column align="center" prop="category" label="活动类型" width="120"/>
+      <el-table-column align="center" prop="targetGroupId" label="目标用户群体" width="120"/>
+      <el-table-column align="center" prop="address" label="活动地点" width="220"/>
+      <el-table-column align="center" prop="regStartTime" label="报名开始时间" width="180"/>
+      <el-table-column align="center" prop="regEndTime" label="报名结束时间" width="180"/>
+      <el-table-column align="center" prop="startTime" label="活动开始时间" width="180"/>
+      <el-table-column align="center" prop="endTime" label="活动结束时间" width="180"/>
+      <el-table-column align="center" prop="maxParticipant" label="最多人数" width="180"/>
+      <el-table-column align="center" fixed="right" label="操作" min-width="160">
         <template #default="scope">
           <el-button link type="primary" size="small"
                      @click="handleClick(scope.row.id)">详情
           </el-button>
-          <el-button link type="primary" size="small" @click="showCommitM(scope.$index,scope.row.id,true)">通过</el-button>
-          <el-button link type="primary" size="small" @click="showCommitM(scope.$index,scope.row.id,false)">打回</el-button>
+          <el-button link type="primary" size="small" @click="showCommitM(scope.$index,scope.row.id,true)">通过
+          </el-button>
+          <el-button link type="primary" size="small" @click="showCommitM(scope.$index,scope.row.id,false)">打回
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -119,7 +136,7 @@ const paginationChange = (pageNum: number, pageSize: number) => {
         @change="paginationChange"
     />
   </div>
-
+  <el-button @click="allPass">全部通过</el-button>
   <el-dialog
       v-model="centerDialogVisible"
       title="修改用户信息"
