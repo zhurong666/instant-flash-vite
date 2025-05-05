@@ -60,6 +60,15 @@ export function updateUserStatus(userInfo: { userId: number, status: number }) {
     })
 }
 
+/** 更新用户详情 */
+export function updateUserBad(userInfo: { userId: number}) {
+    return request<string>({
+        url: "admin/user/" + userInfo.userId + "/ban",
+        method: "post",
+        headers: {toUserId: userInfo.userId},
+    })
+}
+
 
 export function getUserByAdminCityId({pageNum = 0, pageSize = 10}) {
     return request<string>({

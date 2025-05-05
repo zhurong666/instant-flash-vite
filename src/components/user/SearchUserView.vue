@@ -4,7 +4,7 @@ import {Search} from '@element-plus/icons-vue'
 import router from "@/router";
 import {searchApi} from "@/api/event";
 import {SearchResponseData} from "@/api/login/types/search.ts";
-import {getUserByAdminCityId, updateUserStatus} from "@/api/user";
+import {getUserByAdminCityId, updateUserBad} from "@/api/user";
 import {tLog} from "@/utils/tip";
 import {useUserStore} from "@/store/modules/user";
 import {baseImgURL} from "@/utils/service";
@@ -48,9 +48,9 @@ const denyClick = async (index) => {
   const user = tableData.at(index);
   const userId = user.id
   const statusId = user.statusId
-  const data = await updateUserStatus({userId, status: statusId === 1 ? 0 : 1})
-  tLog(data,()=>{
-    tableData.at(index).statusId = statusId === 1 ? 0 : 1
+  const data = await updateUserBad({userId})
+  tLog(data, () => {
+    tableData.at(index).statusId = statusId === 100 ? 0 : 100
   })
 }
 
@@ -90,15 +90,16 @@ const paginationChange = (pageNum: number, pageSize: number) => {
   getData({pageNum})
 }
 
-onMounted(()=>{
+onMounted(() => {
   getData()
 })
+
 function getData(pageNum = 0, pageSize = 10) {
-  getUserByAdminCityId({pageNum, pageSize}).then(resp=>{
+  getUserByAdminCityId({pageNum, pageSize}).then(resp => {
     if (resp.code == 200) {
       tableData.splice(0)
       const user = userStore.getCacheUserInfo()
-      const data = resp.data.filter(item=>{
+      const data = resp.data.filter(item => {
         return item.id !== user.id //忽略自己
       })
       data.forEach(item => {
@@ -141,33 +142,33 @@ function getData(pageNum = 0, pageSize = 10) {
         :data="tableData"
         size="large"
         style="width: 100%">
-      <el-table-column align="center"  fixed prop="id" label="用户编号" width="150"/>
-      <el-table-column align="center"  prop="username" label="用户昵称" width="120"/>
-      <el-table-column align="center"  label="用户头像" width="150">
+      <el-table-column align="center" fixed prop="id" label="用户编号" width="150"/>
+      <el-table-column align="center" prop="username" label="用户昵称" width="120"/>
+      <el-table-column align="center" label="用户头像" width="150">
         <template #default="scope">
           <el-image preview-teleported :src="scope.row.avatar"/>
         </template>
       </el-table-column>
-      <el-table-column align="center"  prop="phone" label="手机号码" width="150"/>
-      <el-table-column align="center"  prop="email" label="用户邮箱" width="180"/>
-      <el-table-column align="center"  prop="gender" label="性别" width="120">
+      <el-table-column align="center" prop="phone" label="手机号码" width="150"/>
+      <el-table-column align="center" prop="email" label="用户邮箱" width="180"/>
+      <el-table-column align="center" prop="gender" label="性别" width="120">
         <template #default="scope">
-          {{!scope.row.gender?'男':'女'}}
+          {{ !scope.row.gender ? '男' : '女' }}
         </template>
       </el-table-column>
-      <el-table-column align="center"  prop="worth.credit" label="积分" width="120"/>
-      <el-table-column align="center"  prop="worth.reputation" label="信誉值" width="120"/>
-      <el-table-column align="center"  prop="userDetail.lastIp" label="最后上线所在地" width="220">
+      <el-table-column align="center" prop="worth.credit" label="积分" width="120"/>
+      <el-table-column align="center" prop="worth.reputation" label="信誉值" width="120"/>
+      <el-table-column align="center" prop="userDetail.lastIp" label="最后上线所在地" width="220">
         <template #default="scope">
-          {{scope.row.userDetail.lastIp || '短期未登录'}}
+          {{ scope.row.userDetail.lastIp || '短期未登录' }}
         </template>
       </el-table-column>
-      <el-table-column align="center"  prop="userDetail.lastTime" label="最后上线时间" width="180">
+      <el-table-column align="center" prop="userDetail.lastTime" label="最后上线时间" width="180">
         <template #default="scope">
-          {{scope.row.userDetail.lastTime || '短期未登录'}}
+          {{ scope.row.userDetail.lastTime || '短期未登录' }}
         </template>
       </el-table-column>
-      <el-table-column align="center"  fixed="right" label="操作" min-width="160">
+      <el-table-column align="center" fixed="right" label="操作" min-width="160">
         <template #default="scope">
           <el-button link type="primary" size="small"
                      @click="handleClick(scope.$index)">详情
@@ -176,7 +177,7 @@ function getData(pageNum = 0, pageSize = 10) {
                      @click="editClick(scope.$index)">编辑
           </el-button>
           <el-button link type="primary" size="small"
-                     @click="denyClick(scope.$index)">{{ scope.row.statusId == 1 ? '禁言' : '解封' }}
+                     @click="denyClick(scope.$index)">{{ scope.row.statusId !== 100 ? '禁言' : '解封' }}
           </el-button>
         </template>
       </el-table-column>
@@ -270,6 +271,7 @@ function getData(pageNum = 0, pageSize = 10) {
     margin-bottom: 10px;
   }
 }
+
 .el-image {
   width: 60%;
   height: 60%;
