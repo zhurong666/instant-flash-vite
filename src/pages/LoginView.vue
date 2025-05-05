@@ -18,8 +18,8 @@ const loading = ref(false)
 const codeUrl = ref(baseUri + "/common")
 /** 登录表单数据 */
 const loginFormData: LoginRequestData = reactive({
-  username: "110",
-  password: "123456",
+  username: "18608050250",
+  password: "",
   verifyCode: ""
 })
 /** 登录表单校验规则 */

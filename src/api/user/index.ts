@@ -5,7 +5,10 @@ import {UserInfo} from "./types";
 export function getUserInfoApi(userId: number) {
     return request<UserInfo>({
         url: "admin/user/" + userId,
-        method: "get"
+        method: "get",
+        headers: {
+            toUserId:userId
+        }
     })
 }
 
@@ -66,5 +69,13 @@ export function getUserByAdminCityId({pageNum = 0, pageSize = 10}) {
             pageSize,
         },
         method: HttpMethod.GET
+    })
+}
+
+export function create(data) {
+    return request<string>({
+        url: "/admin/user/create",
+        data,
+        method: HttpMethod.POST
     })
 }

@@ -1,24 +1,24 @@
 <template>
   <el-form :model="form" label-width="auto" class="custom-form">
     <el-form-item label="用户名称：">
-      <el-input v-model="form.username" placeholder="请输入用户名" />
+      <el-input v-model="form.username" placeholder="请输入用户名"/>
     </el-form-item>
     <el-form-item label="手机号码：">
-      <el-input v-model="form.phone" placeholder="请输入手机号" />
+      <el-input v-model="form.phone" placeholder="请输入手机号"/>
     </el-form-item>
     <el-form-item label="用户邮箱：">
-      <el-input v-model="form.email" placeholder="请输入邮箱" />
+      <el-input v-model="form.email" placeholder="请输入邮箱"/>
     </el-form-item>
     <el-form-item label="密码：">
-      <el-input v-model="form.password" type="password" placeholder="请输入密码" />
+      <el-input v-model="form.password" type="password" placeholder="请输入密码"/>
     </el-form-item>
     <el-form-item label="出生日期：">
       <el-col :span="11">
         <el-date-picker
-          v-model="form.birthday"
-          type="datetime"
-          placeholder="请选择日期"
-          style="width: 100%"
+            v-model="form.birthday"
+            type="datetime"
+            placeholder="请选择日期"
+            style="width: 100%"
         />
       </el-col>
     </el-form-item>
@@ -30,7 +30,7 @@
       </el-radio-group>
     </el-form-item>
     <el-form-item label="其他：">
-      <el-input v-model="form.desc" type="textarea" placeholder="请输入备注信息" />
+      <el-input v-model="form.desc" type="textarea" placeholder="请输入备注信息"/>
     </el-form-item>
 
     <div class="form-actions">
@@ -41,7 +41,8 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive } from 'vue'
+import {reactive, toRaw} from 'vue'
+import {create} from "@/api/user";
 
 const form = reactive({
   username: '',
@@ -53,8 +54,13 @@ const form = reactive({
   desc: '',
 })
 
-const onSubmit = () => {
-  console.log(form)
+const onSubmit = async () => {
+  const data = await create(toRaw(form))
+  if (data.code === 200) {
+    alert("成功")
+  }else {
+    alert("失败")
+  }
 }
 
 const onReset = () => {
