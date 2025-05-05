@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, onMounted, reactive, ref} from "vue";
+import {computed, onMounted, reactive, ref, toRaw} from "vue";
 import {baseImgURL, baseURL} from "@/utils/service.ts";
 import {Plus} from "@element-plus/icons-vue";
 import type {UploadUserFile} from "element-plus";
@@ -25,7 +25,8 @@ const editUser = reactive({
   birthDay: new Date(),
   avatar: "",
   statusId: "",
-  reputation: ""
+  reputation: "",
+  roleId: "",
 })
 
 
@@ -41,6 +42,7 @@ const placeholderUser = ref({
   birthDay: new Date(),
   avatar: "",
   statusId: "",
+  roleId: "",
 })
 
 const userTypes = ref(<any[]>[])
@@ -123,6 +125,16 @@ const userStatus = ref(<any[]>[])
 
 onMounted(() => {
   getData()
+})
+const cpuRole = computed(() => {
+  if (userStatus.value.length == 0) {
+    return ""
+  }
+  if (!placeholderUser.value.roleId) {
+    return ""
+  }
+  const find = restaurants2.value.find(item => item.id == placeholderUser.value.roleId);
+  return find ? find.name : ""
 })
 
 const getData = async () => {
@@ -297,7 +309,7 @@ const submit = async () => {
           :fetch-suggestions="querySearch2"
           clearable
           class="inline-input w-50"
-          :placeholder="placeholderUser.roleId + ''"
+          :placeholder="cpuRole"
           @select="handleSelect2"
       />
     </div>
