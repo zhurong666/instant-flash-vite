@@ -3,7 +3,7 @@ import {computed, onMounted, reactive, ref} from "vue";
 import {baseImgURL, baseURL} from "@/utils/service.ts";
 import {Plus} from "@element-plus/icons-vue";
 import type {UploadUserFile} from "element-plus";
-import {getCity} from "@/api";
+import {getCity, getRoles} from "@/api";
 import {useRoute} from "vue-router";
 import {getUserInfoApi, getUserTypes, updateUserInfo} from "@/api/user";
 import {getUserStatusCache} from "@/utils/cache/common";
@@ -12,6 +12,7 @@ const {params} = useRoute();
 
 const value = ref("")
 const state = ref('')
+const role = ref('')
 
 const editUser = reactive({
   userId: params.id,
@@ -24,6 +25,7 @@ const editUser = reactive({
   birthDay: new Date(),
   avatar: "",
   statusId: "",
+  reputation: ""
 })
 
 
@@ -53,11 +55,11 @@ const statusOptions = [
 const genders = [
   {
     value: 1,
-    label:'男'
+    label: '男'
   },
   {
     value: 2,
-    label:'女'
+    label: '女'
   }
 ]
 
@@ -70,6 +72,8 @@ const uploadSuss = (res) => {
 }
 
 const restaurants = ref([])
+const restaurants2 = ref([])
+
 const createFilter = (queryString: string) => {
   return (restaurant) => {
     // let name:string = restaurant.name
@@ -77,16 +81,35 @@ const createFilter = (queryString: string) => {
     return name.indexOf(queryString) > -1
   }
 }
+const createFilter2 = (queryString: string) => {
+  return (restaurant) => {
+    // let name:string = restaurant.name
+    let name: string = restaurant.name
+    return name.indexOf(queryString) > -1
+  }
+}
+
 const querySearch = (queryString: string, cb: any) => {
   const results = queryString
       ? restaurants.value.filter(createFilter(queryString))
       : restaurants.value
   // call callback function to return suggestions
-  console.log("resultsLength:", results.length)
   cb(results)
 }
+
+const querySearch2 = (queryString: string, cb: any) => {
+  const results = queryString
+      ? restaurants2.value.filter(createFilter2(queryString))
+      : restaurants2.value
+  cb(results)
+}
+
 const handleSelect = (item: RestaurantItem) => {
   editUser.cityId = item.id
+}
+
+const handleSelect2 = (item: RestaurantItem) => {
+  editUser.roleId = item.id
 }
 
 const cpuIdentity = computed(() => {
@@ -104,6 +127,7 @@ onMounted(() => {
 
 const getData = async () => {
   const data = await getCity()
+  const roles = await getRoles()
   if (data.code == 200) {
     // const cities = converse(data.data)
     let values = Object.values(data.data);
@@ -111,7 +135,13 @@ const getData = async () => {
       value1["value"] = value1["extName"]
     }
     restaurants.value.push(...values)
-
+  }
+  if (roles.code == 200) {
+    let values = Object.values(roles.data);
+    values.forEach((value) => {
+      value["value"] = value["name"]
+    })
+    restaurants2.value.push(...values)
   }
   const userData = await getUserInfoApi(editUser.userId)
   placeholderUser.value = userData.data
@@ -184,7 +214,8 @@ const submit = async () => {
     </div>
     <div class="item">
       <span>性别</span>
-      <el-select v-model="editUser.gender" :placeholder="placeholderUser.gender == 1 ? '男' : '女'" style="width: 240px">
+      <el-select v-model="editUser.gender" :placeholder="placeholderUser.gender == 1 ? '男' : '女'"
+                 style="width: 240px">
         <el-option
             v-for="item in genders"
             :key="item.value"
@@ -250,6 +281,25 @@ const submit = async () => {
             :disabled="item.disabled"
         />
       </el-select>
+    </div>
+
+    <div class="item">
+      <span>信誉值</span>
+      <input class="edit-input" type="text" name="reputation"
+             :placeholder="placeholderUser?.worth?.reputation"
+             v-model="editUser.reputation"/>
+    </div>
+
+    <div class="item">
+      <span>用户角色</span>
+      <el-autocomplete
+          v-model="role"
+          :fetch-suggestions="querySearch2"
+          clearable
+          class="inline-input w-50"
+          :placeholder="placeholderUser.roleId + ''"
+          @select="handleSelect2"
+      />
     </div>
   </div>
   <div class="submit-container">

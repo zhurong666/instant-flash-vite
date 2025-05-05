@@ -7,6 +7,12 @@ export function getCity(){
     })
 }
 
+export function getRoles(){
+    return request({
+        url:"/common/getRoleList"
+    })
+}
+
 export function getCityByLatLng(lat:number, lng:number) {
     return axios.get("https://api.kertennet.com/geography/locationInfo",{
         params:{
