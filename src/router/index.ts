@@ -39,6 +39,12 @@ const routes: RouteRecordRaw[] = [
                 component: () => import("../components/index/Set.vue")
             },
             {
+                path: 'feedback',
+                name: 'feedback',
+                meta: {menuId: '1-3'},
+                component: () => import("../components/index/Feedback.vue")
+            },
+            {
                 path: '/me',
                 name: 'Me',
                 // meta: {menuId: '10-1'},

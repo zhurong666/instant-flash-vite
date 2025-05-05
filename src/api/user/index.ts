@@ -7,7 +7,7 @@ export function getUserInfoApi(userId: number) {
         url: "admin/user/" + userId,
         method: "get",
         headers: {
-            toUserId:userId
+            toUserId: userId
         }
     })
 }
@@ -61,7 +61,7 @@ export function updateUserStatus(userInfo: { userId: number, status: number }) {
 }
 
 /** 更新用户详情 */
-export function updateUserBad(userInfo: { userId: number}) {
+export function updateUserBad(userInfo: { userId: number }) {
     return request<string>({
         url: "admin/user/" + userInfo.userId + "/ban",
         method: "post",
@@ -84,6 +84,26 @@ export function getUserByAdminCityId({pageNum = 0, pageSize = 10}) {
 export function create(data) {
     return request<string>({
         url: "/admin/user/create",
+        data,
+        method: HttpMethod.POST
+    })
+}
+
+export function fbg({pageNum = 1, pageSize = 10}, status = 0) {
+    return request<string>({
+        url: "/admin/user/fbg",
+        params: {
+            pageNum,
+            pageSize,
+            status,
+        },
+        method: HttpMethod.GET
+    })
+}
+
+export function fbgu(id: number, data: { question: string, answer: string, status: number }) {
+    return request<string>({
+        url: "/admin/user/fbg/" + id,
         data,
         method: HttpMethod.POST
     })
