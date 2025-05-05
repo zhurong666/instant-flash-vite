@@ -68,11 +68,11 @@ const cpuStatus = computed(() => {
     <div class="user-info">
       <div class="item">
         <span>信誉值</span>
-        <input type="text" disabled :value="userInfo?.reputation">
+        <input type="text" disabled :value="userInfo?.worth?.reputation">
       </div>
       <div class="item">
         <span>积分</span>
-        <input type="text" disabled value="不可见">
+        <input type="text" disabled :value="userInfo?.worth?.credit">
       </div>
       <div class="item">
         <span>状态</span>
@@ -86,11 +86,11 @@ const cpuStatus = computed(() => {
       </div>
       <div class="item">
         <span>最后上线所在地</span>
-        <input type="text" disabled :value="userInfo?.lastAddress">
+        <input type="text" disabled :value="userInfo?.userDetail?.lastTime">
       </div>
       <div class="item">
         <span>最后上线时间</span>
-        <input type="text" disabled :value="userInfo?.lastTime">
+        <input type="text" disabled :value="userInfo?.userDetail?.lastTime">
       </div>
       <div class="item">
         <span>注册时间</span>

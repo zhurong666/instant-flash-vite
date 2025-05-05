@@ -283,7 +283,7 @@ const submit = async () => {
     border-radius: 0;
     box-sizing: border-box;
     border: none;
-    background-color: #fff;
+    background-color: #e0ebf3;
     color: #2c2c2c;
   }
 
@@ -305,6 +305,7 @@ const submit = async () => {
   :deep(.el-select__wrapper) {
     height: 40px;
     border-radius: 0;
+    background-color: #e0ebf3;
   }
 }
 
@@ -330,8 +331,9 @@ const submit = async () => {
 }
 
 .avatar {
-  width: 240px;
-  height: 240px;
+  width: 120px;
+  height: 120px;
+  background-color: #e0ebf3;
 }
 
 .avatar-uploader {
