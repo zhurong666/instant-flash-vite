@@ -50,6 +50,16 @@ const statusOptions = [
     disabled: true,
   }
 ]
+const genders = [
+  {
+    value: 1,
+    label:'男'
+  },
+  {
+    value: 2,
+    label:'女'
+  }
+]
 
 const uploadSuss = (res) => {
   if (res.code == 200) {
@@ -174,9 +184,14 @@ const submit = async () => {
     </div>
     <div class="item">
       <span>性别</span>
-      <input class="edit-input" type="text" name="gender"
-             :placeholder="placeholderUser.gender == 1 ? '男' : '女'"
-             v-model="editUser.gender">
+      <el-select v-model="editUser.gender" :placeholder="placeholderUser.gender == 1 ? '男' : '女'" style="width: 240px">
+        <el-option
+            v-for="item in genders"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+        />
+      </el-select>
     </div>
     <div class="item">
       <span>账号所属地</span>

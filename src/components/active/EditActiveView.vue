@@ -91,7 +91,10 @@ const submit = async () => {
   let temp = removeUnchangedValues(editEvent, placeholderEvent);
 
   // 现在 temp 就是你需要的结果
-  console.log(temp)
+  if (Object.keys(temp).length === 1){
+    alert("你没有修改任何东西")
+    return
+  }
   const data = await updateEvent(temp)
   console.log(data)
   if (data.code === 200) {
@@ -269,7 +272,6 @@ const cpuEventGroup = computed(()=>{
 .item {
   width: @input-width;
   font-size: 16px;
-  background-color: rgba(19, 19, 19, 0.82);
   height: fit-content;
   border-radius: 10px;
   display: flex;
@@ -298,7 +300,7 @@ const cpuEventGroup = computed(()=>{
     border-radius: 0;
     box-sizing: border-box;
     border: none;
-    background-color: #fff;
+    background-color: #e0ebf3;
     color: #2c2c2c;
   }
 
@@ -341,13 +343,16 @@ const cpuEventGroup = computed(()=>{
 }
 
 .avatar {
-  width: 220px;
-  height: 220px;
+  width: 240px;
+  height: 120px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .ipt {
   width: @input-width !important;
   height: 40px !important;
+
 }
 
 .show-member {

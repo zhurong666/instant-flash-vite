@@ -29,8 +29,8 @@ export default defineConfig({
             // '/foo': 'http://localhost:4567',
             // 选项写法
             '/api': {
-                // target: 'http://192.168.1.121:8080',
-                target: 'https://api.yunzou.cloudns.org:10088/',
+                target: 'http://127.0.0.1:8080/',
+                // target: 'https://api.yunzou.cloudns.org:10088/',
                 changeOrigin: true,
                 rewrite: (path) => path.replace(/^\/api/, '')
             },
