@@ -8,9 +8,9 @@
       <el-icon><location /></el-icon>
       <span>系统统计</span>
     </template>
-    <el-menu-item-group title="系统统计">
-      <el-menu-item index="1-1">系统统计</el-menu-item>
-      <el-menu-item index="1-2">主页内容</el-menu-item>
+    <el-menu-item-group title="系统">
+      <el-menu-item index="1-1">首页</el-menu-item>
+      <el-menu-item index="1-2">微信首页</el-menu-item>
       <el-menu-item index="1-3">反馈</el-menu-item>
       <el-menu-item index="1-4" disabled>测试</el-menu-item>
     </el-menu-item-group>
