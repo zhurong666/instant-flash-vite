@@ -1,0 +1,83 @@
+name: Build Portable Conda Env (ARM64 Full Pack)
+
+on: workflow_dispatch
+
+jobs:
+  build-and-pack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Generate Build Script
+        run: |
+          cat << 'EOF' > entrypoint.sh
+          #!/bin/bash
+          set -e
+          
+          echo "=== [1] 创建 Conda 环境并安装基础库 ==="
+          # 创建一个干净的 python 3.11 环境
+          conda create -n my_env python=3.11 -y
+          source /opt/conda/bin/activate my_env
+          
+          echo "=== [2] 安装指定的 Python 依赖 ==="
+          # 优先从 conda-forge 安装重型库（如 pandas, numpy），保证二进制兼容性
+          conda install -c conda-forge \
+              pandas \
+              openpyxl \
+              numpy \
+              pyyaml \
+              -y
+          
+          # 安装无法从 conda 获取或更适合 pip 的库
+          pip install \
+              requests \
+              pyjwt \
+              loguru \
+              aliyun-python-sdk-core \
+              aliyun-python-sdk-cr \
+              tqdm \
+              python-dotenv \
+              conda-pack
+          
+          echo "=== [3] 使用 conda-pack 进行物理打包 ==="
+          # -n: 指定环境名
+          # -o: 输出文件名
+          # --ignore-missing-files: 忽略一些非关键的缓存文件错误
+          conda pack -n my_env -o /work/my_env_arm64_packed.tar.gz --ignore-missing-files
+          
+          echo "=== [4] 生成解压即用说明 ==="
+          cat > /work/readme.txt << 'README_EOF'
+          使用方法：
+          1. 将 my_env_arm64_packed.tar.gz 上传至目标机器。
+          2. 创建一个目录并解压：
+             mkdir -p my_env
+             tar -xzf my_env_arm64_packed.tar.gz -C my_env
+          3. 激活环境（无需安装 conda）：
+             source my_env/bin/activate
+          4. 验证：
+             python -V
+             pip list
+          README_EOF
+          
+          echo "✅ 打包完成！"
+          EOF
+          chmod +x entrypoint.sh
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+        with:
+          platforms: linux/arm64
+
+      - name: Run Docker (ARM64)
+        run: |
+          docker run --rm --platform linux/arm64 \
+          -v ${{ github.workspace }}:/work \
+          condaforge/miniforge3:latest /bin/bash /work/entrypoint.sh
+
+      - name: Upload Environment Package
+        uses: actions/upload-artifact@v4
+        with:
+          name: my_env_arm64_packed
+          path: |
+            my_env_arm64_packed.tar.gz
+            readme.txt
