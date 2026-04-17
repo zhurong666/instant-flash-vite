@@ -74,6 +74,10 @@ jobs:
           -v ${{ github.workspace }}:/work \
           condaforge/miniforge3:latest /bin/bash /work/entrypoint.sh
 
+      # 👇 新增这一步，将工作区所有文件的所有权改为当前 runner 用户
+      - name: Fix Permissions
+        run: sudo chown -R $USER:$USER ${{ github.workspace }}
+
       - name: Upload Environment Package
         uses: actions/upload-artifact@v4
         with:
