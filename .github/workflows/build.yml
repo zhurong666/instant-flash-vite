@@ -1,0 +1,79 @@
+name: Download Python Offline Packages (ARM64)
+
+on: workflow_dispatch
+
+jobs:
+  download-python-packages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Generate Build Script
+        run: |
+          cat << 'EOF' > entrypoint.sh
+          #!/bin/bash
+          set -e
+          
+          echo "=== [1] 初始化环境与依赖列表 ==="
+          mkdir -p /work/offline_wheels
+          cd /work
+          
+          # 将你需要的包写入 requirements.txt
+          # 顺便加上了 numpy, PyYAML, tqdm 等你提到“一些常用库”
+          cat > requirements.txt << 'REQ_EOF'
+          requests
+          pyjwt
+          pandas
+          openpyxl
+          loguru
+          aliyun-python-sdk-core
+          aliyun-python-sdk-cr
+          numpy
+          PyYAML
+          tqdm
+          python-dotenv
+          urllib3
+          REQ_EOF
+          
+          echo "=== [2] 下载离线 Wheel 包 (ARM64 架构) ==="
+          # 使用 pip download 将包和它们的级联依赖全部下载到 offline_wheels 目录
+          pip download -r requirements.txt -d /work/offline_wheels
+          
+          echo "=== [3] 生成一键安装脚本 ==="
+          cat > install.sh << 'INSTALL_EOF'
+          #!/bin/bash
+          set -e
+          
+          echo "=== 开始离线安装 Python 依赖 ==="
+          # --no-index: 强制不访问外网 PyPI
+          # --find-links: 指定本地包目录
+          pip install --no-index --find-links=offline_wheels/ -r requirements.txt
+          
+          echo "✅ Python 依赖离线安装完成!"
+          INSTALL_EOF
+          
+          chmod +x install.sh
+          
+          echo "=== [4] 打包所有文件 ==="
+          tar -czvf python-offline-pkgs-arm64.tar.gz offline_wheels/ requirements.txt install.sh
+          EOF
+          
+          chmod +x entrypoint.sh
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+        with:
+          platforms: linux/arm64
+
+      # 使用包含 Python 的轻量化镜像执行下载任务
+      - name: Run Docker
+        run: |
+          docker run --rm --platform linux/arm64 \
+          -v ${{ github.workspace }}:/work \
+          python:3.11-slim /bin/bash /work/entrypoint.sh
+          
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-offline-pkgs-arm64
+          path: python-offline-pkgs-arm64.tar.gz
