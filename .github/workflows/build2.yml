@@ -20,15 +20,16 @@ jobs:
           source /opt/conda/bin/activate my_env
           
           echo "=== [2] 安装指定的 Python 依赖 ==="
-          # 优先从 conda-forge 安装重型库（如 pandas, numpy），保证二进制兼容性
+          # 优先从 conda-forge 安装带 C/Rust 扩展的底层重型库，确保 GLIBC 兼容性
           conda install -c conda-forge \
               pandas \
               openpyxl \
               numpy \
               pyyaml \
+              cryptography \
               -y
           
-          # 安装无法从 conda 获取或更适合 pip 的库
+          # 安装无法从 conda 获取，或是纯 Python 代码的库
           pip install \
               requests \
               pyjwt \
