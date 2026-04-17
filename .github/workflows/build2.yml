@@ -39,6 +39,7 @@ jobs:
               loguru \
               aliyun-python-sdk-core \
               aliyun-python-sdk-cr \
+              aliyun-python-sdk-ecs \
               tqdm \
               python-dotenv \
               conda-pack
